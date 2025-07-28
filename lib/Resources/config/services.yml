@@ -96,6 +96,7 @@ services:
     netgen_information_collection.export.json:
         class: Netgen\InformationCollection\Core\Export\JsonExportResponseFormatter
         arguments:
+            - '@Ibexa\Core\Helper\TranslationHelper'
             - '@slugger'
         tags:
             - { name: netgen_information_collection.export.formatter }

@@ -6,6 +6,7 @@ namespace Netgen\InformationCollection\Core\Export;
 
 use DateTimeImmutable;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content;
+use Ibexa\Core\Helper\TranslationHelper;
 use Netgen\InformationCollection\API\Export\ExportResponseFormatter;
 use Netgen\InformationCollection\API\Value\Export\Export;
 use Symfony\Component\HttpFoundation\File\File;
@@ -20,10 +21,12 @@ use function str_ends_with;
 
 class JsonExportResponseFormatter implements ExportResponseFormatter
 {
+    private TranslationHelper $translationHelper;
     private SluggerInterface $slugger;
 
-    public function __construct(SluggerInterface $slugger)
+    public function __construct(TranslationHelper $translationHelper, SluggerInterface $slugger)
     {
+        $this->translationHelper = $translationHelper;
         $this->slugger = $slugger;
     }
 
@@ -43,7 +46,7 @@ class JsonExportResponseFormatter implements ExportResponseFormatter
 
     public function formatToFile(Export $export, Content $content, string $path): File
     {
-        $contentName = $content->getName();
+        $contentName = $this->translationHelper->getTranslatedContentName($content);
 
         $contents = $export->getContents();
 
