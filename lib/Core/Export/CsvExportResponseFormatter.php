@@ -14,19 +14,21 @@ use Netgen\InformationCollection\API\Value\Export\Export;
 use SplTempFileObject;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 use function str_ends_with;
 
 final class CsvExportResponseFormatter implements ExportResponseFormatter
 {
     private TranslationHelper $translationHelper;
-
     private ConfigResolverInterface $configResolver;
+    private SluggerInterface $slugger;
 
-    public function __construct(TranslationHelper $translationHelper, ConfigResolverInterface $configResolver)
+    public function __construct(TranslationHelper $translationHelper, ConfigResolverInterface $configResolver, SluggerInterface $slugger)
     {
         $this->translationHelper = $translationHelper;
         $this->configResolver = $configResolver;
+        $this->slugger = $slugger;
     }
 
     public function getIdentifier(): string
@@ -61,8 +63,9 @@ final class CsvExportResponseFormatter implements ExportResponseFormatter
         $config = $this->configResolver->getParameter('export', 'netgen_information_collection');
         $config = $config['csv'];
 
+        $contentNameSlug = $this->slugger->slug($contentName)->lower()->toString();
         $path = str_ends_with($path, '/') ? $path : $path . '/';
-        $filePath = $path . $contentName . '-' . (new DateTimeImmutable())->format('YmdHis') . '.csv';
+        $filePath = $path . $contentNameSlug . '-' . (new DateTimeImmutable())->format('YmdHis') . '.csv';
 
         $writer = Writer::createFromPath($filePath, 'w+');
         $writer->setDelimiter($config['delimiter']);

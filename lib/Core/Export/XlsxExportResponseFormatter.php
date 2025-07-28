@@ -14,6 +14,7 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 use function header;
 use function mb_substr;
@@ -22,10 +23,12 @@ use function str_ends_with;
 final class XlsxExportResponseFormatter implements ExportResponseFormatter
 {
     private TranslationHelper $translationHelper;
+    private SluggerInterface $slugger;
 
-    public function __construct(TranslationHelper $translationHelper)
+    public function __construct(TranslationHelper $translationHelper, SluggerInterface $slugger)
     {
         $this->translationHelper = $translationHelper;
+        $this->slugger = $slugger;
     }
 
     public function getIdentifier(): string
@@ -77,6 +80,7 @@ final class XlsxExportResponseFormatter implements ExportResponseFormatter
 
         $writer = new Xlsx($spreadsheet);
 
+        $contentNameSlug = $this->slugger->slug($contentName)->lower()->toString();
         $path = str_ends_with($path, '/') ? $path : $path . '/';
         $filePath = $path . $contentName . '-' . (new DateTimeImmutable())->format('YmdHis') . '.xlsx';
 

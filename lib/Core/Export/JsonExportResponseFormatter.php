@@ -11,6 +11,7 @@ use Netgen\InformationCollection\API\Value\Export\Export;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\String\Slugger\SluggerInterface;
 
 use function array_unshift;
 use function file_put_contents;
@@ -19,6 +20,13 @@ use function str_ends_with;
 
 class JsonExportResponseFormatter implements ExportResponseFormatter
 {
+    private SluggerInterface $slugger;
+
+    public function __construct(SluggerInterface $slugger)
+    {
+        $this->slugger = $slugger;
+    }
+
     public function getIdentifier(): string
     {
         return 'json_export';
@@ -41,8 +49,9 @@ class JsonExportResponseFormatter implements ExportResponseFormatter
 
         array_unshift($contents, $export->getHeader());
 
+        $contentNameSlug = $this->slugger->slug($contentName)->lower()->toString();
         $path = str_ends_with($path, '/') ? $path : $path . '/';
-        $filePath = $path . $contentName . '-' . (new DateTimeImmutable())->format('YmdHis') . '.json';
+        $filePath = $path . $contentNameSlug . '-' . (new DateTimeImmutable())->format('YmdHis') . '.json';
 
         file_put_contents($filePath, json_encode($contents));
 

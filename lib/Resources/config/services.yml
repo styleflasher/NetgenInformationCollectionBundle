@@ -95,6 +95,8 @@ services:
 
     netgen_information_collection.export.json:
         class: Netgen\InformationCollection\Core\Export\JsonExportResponseFormatter
+        arguments:
+            - '@slugger'
         tags:
             - { name: netgen_information_collection.export.formatter }
 

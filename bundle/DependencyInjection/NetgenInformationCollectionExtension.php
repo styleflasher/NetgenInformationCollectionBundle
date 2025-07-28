@@ -15,6 +15,7 @@ use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Yaml\Yaml;
 use function array_merge;
 
@@ -147,6 +148,7 @@ class NetgenInformationCollectionExtension extends Extension implements PrependE
             $csvExportFormatter->addTag('netgen_information_collection.export.formatter');
             $csvExportFormatter->addArgument(new Reference(TranslationHelper::class));
             $csvExportFormatter->addArgument(new Reference('ibexa.config.resolver'));
+            $csvExportFormatter->addArgument(new Reference(SluggerInterface::class));
             $csvExportFormatter->setPublic(false);
             $csvExportFormatter->setAutowired(false);
             $csvExportFormatter->setAutoconfigured(false);
@@ -160,6 +162,7 @@ class NetgenInformationCollectionExtension extends Extension implements PrependE
             );
             $xlsExportFormatter->addTag('netgen_information_collection.export.formatter');
             $xlsExportFormatter->addArgument(new Reference(TranslationHelper::class));
+            $xlsExportFormatter->addArgument(new Reference(SluggerInterface::class));
             $xlsExportFormatter->setPublic(false);
             $xlsExportFormatter->setAutowired(false);
             $xlsExportFormatter->setAutoconfigured(false);
@@ -169,6 +172,7 @@ class NetgenInformationCollectionExtension extends Extension implements PrependE
             );
             $xlsxExportFormatter->addTag('netgen_information_collection.export.formatter');
             $xlsxExportFormatter->addArgument(new Reference(TranslationHelper::class));
+            $xlsxExportFormatter->addArgument(new Reference(SluggerInterface::class));
             $xlsxExportFormatter->setPublic(false);
             $xlsxExportFormatter->setAutowired(false);
             $xlsxExportFormatter->setAutoconfigured(false);
