@@ -1,6 +1,6 @@
 {
     "name": "netgen/information-collection-bundle",
-    "description": "Information collection alike feature for Ibexa Platform",
+    "description": "Information collection alike feature for Ibexa CMS",
     "type": "ibexa-bundle",
     "keywords": [
         "ibexa",
@@ -23,25 +23,23 @@
         }
     ],
     "require": {
-        "php": "^7.4 || ^8.0",
+        "php": "^8.3",
         "ext-pdo": "*",
-        "doctrine/orm": "^2.5",
-        "ibexa/admin-ui": "^4.0",
-        "ibexa/content-forms": "^4.0",
-        "ibexa/core": "^4.0",
-        "symfony/swiftmailer-bundle": "^3.4",
-        "twig/twig": "^3.0",
-        "google/recaptcha": "^1.2",
-        "doctrine/doctrine-migrations-bundle": "^3.0",
-        "symfony/mailer": "^5.1",
-        "phpoffice/phpspreadsheet": "^1.14",
-        "symfony/string": "^5.4"
+        "doctrine/orm": "^2.20",
+        "ibexa/admin-ui": "^5.0",
+        "ibexa/content-forms": "^5.0",
+        "ibexa/core": "^5.0",
+        "twig/twig": "^3.22",
+        "google/recaptcha": "^1.3",
+        "doctrine/doctrine-migrations-bundle": "^3.7",
+        "symfony/mailer": "^7.3",
+        "phpoffice/phpspreadsheet": "^5.3",
+        "symfony/string": "^7.3"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.2",
-        "matthiasnoback/symfony-config-test": "~4.0",
-        "matthiasnoback/symfony-dependency-injection-test": "~4.0",
-        "friendsofphp/php-cs-fixer": "^3.3"
+        "phpunit/phpunit": "^11.5",
+        "matthiasnoback/symfony-config-test": "^6.1",
+        "matthiasnoback/symfony-dependency-injection-test": "^6.2"
     },
     "autoload": {
         "psr-4": {
@@ -57,7 +55,6 @@
     },
     "scripts": {
         "test": "@php vendor/bin/phpunit -c phpunit.xml --colors=always",
-        "fix": "@php vendor/bin/php-cs-fixer fix",
         "coverage": "@php -dzend_extension=xdebug.so vendor/bin/phpunit -c phpunit.xml --colors=always",
         "phpstan": "@php vendor/bin/phpstan analyse -c phpstan.neon --level=7 --ansi lib bundle"
     },
@@ -67,7 +64,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0.x-dev"
+            "dev-master": "4.0.x-dev"
         }
     },
     "config": {
