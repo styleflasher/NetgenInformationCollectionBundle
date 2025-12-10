@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Netgen\InformationCollection\Core\Persistence\Gateway;
 
 use Doctrine\DBAL\Connection;
-use PDO;
 
 final class DoctrineDatabase
 {
@@ -18,8 +17,6 @@ final class DoctrineDatabase
 
     /**
      * Returns number of content objects that have any collection.
-     *
-     * @throws \Doctrine\DBAL\DBALException
      */
     public function getContentsWithCollectionsCount(): int
     {
@@ -27,47 +24,43 @@ final class DoctrineDatabase
         $query->select(
             'COUNT(DISTINCT eic.contentobject_id) AS count'
         )
-            ->from($this->connection->quoteIdentifier('ezinfocollection'), 'eic')
+            ->from('ezinfocollection', 'eic')
             ->innerJoin(
                 'eic',
-                $this->connection->quoteIdentifier('ezcontentobject'),
-                'eco',
+                'ibexa_content',
+                'ic',
                 $query->expr()->eq(
-                    $this->connection->quoteIdentifier('eic.contentobject_id'),
-                    $this->connection->quoteIdentifier('eco.id')
+                    'eic.contentobject_id',
+                    'ic.id'
                 )
             )
             ->leftJoin(
                 'eic',
-                $this->connection->quoteIdentifier('ezcontentobject_tree'),
-                'ecot',
+                'ibexa_content_tree',
+                'ict',
                 $query->expr()->eq(
-                    $this->connection->quoteIdentifier('eic.contentobject_id'),
-                    $this->connection->quoteIdentifier('ecot.contentobject_id')
+                    'eic.contentobject_id',
+                    'ict.contentobject_id'
                 )
             );
 
-        $statement = $query->execute();
+        $data = $query->fetchAllAssociative();
 
-        return (int) $statement->fetchColumn();
+        return (int) ($data[0]['count'] ?? 0);
     }
 
     /**
      * Returns content objects with their collections.
-     *
-     * @throws \Doctrine\DBAL\DBALException
      */
     public function getObjectsWithCollections(int $limit, int $offset): array
     {
         $contentIdsQuery = $this->connection->createQueryBuilder();
         $contentIdsQuery
             ->select('DISTINCT contentobject_id AS id')
-            ->from($this->connection->quoteIdentifier('ezinfocollection'));
-
-        $statement = $contentIdsQuery->execute();
+            ->from('ezinfocollection');
 
         $contents = [];
-        foreach ($statement->fetchAll() as $content) {
+        foreach ($contentIdsQuery->fetchAllAssociative() as $content) {
             $contents[] = (int) $content['id'];
         }
 
@@ -77,42 +70,25 @@ final class DoctrineDatabase
 
         $query = $this->connection->createQueryBuilder();
         $query
-            ->select(
-                'eco.id AS content_id',
-                'ecot.main_node_id'
-            )
-            ->from($this->connection->quoteIdentifier('ezcontentobject'), 'eco')
+            ->select('ic.id AS content_id', 'ict.main_node_id')
+            ->from('ibexa_content', 'ic')
             ->leftJoin(
-                'eco',
-                $this->connection->quoteIdentifier('ezcontentobject_tree'),
-                'ecot',
-                $query->expr()->eq(
-                    $this->connection->quoteIdentifier('eco.id'),
-                    $this->connection->quoteIdentifier('ecot.contentobject_id')
-                )
+                'ic',
+                'ibexa_content_tree',
+                'ict',
+                $query->expr()->eq('ic.id', 'ict.contentobject_id')
             )
             ->innerJoin(
-                'eco',
-                $this->connection->quoteIdentifier('ezcontentclass'),
-                'ecc',
-                $query->expr()->eq(
-                    $this->connection->quoteIdentifier('eco.contentclass_id'),
-                    $this->connection->quoteIdentifier('ecc.id')
-                )
+                'ic',
+                'ibexa_content_type',
+                'ictype',
+                $query->expr()->eq('ic.content_type_id', 'ictype.id')
             )
-            ->where(
-                $query->expr()->eq('ecc.version', 0)
-            )
-            ->andWhere($query->expr()->in('eco.id', $contents))
-            ->groupBy([
-                $this->connection->quoteIdentifier('ecot.main_node_id'),
-                $this->connection->quoteIdentifier('content_id'),
-            ])
+            ->andWhere($query->expr()->in('ic.id', $contents))
+            ->groupBy(['ict.main_node_id', 'content_id'])
             ->setFirstResult($offset)
             ->setMaxResults($limit);
 
-        $statement = $query->execute();
-
-        return $statement->fetchAll(PDO::FETCH_ASSOC);
+        return $query->fetchAllAssociative();
     }
 }

@@ -9,7 +9,7 @@ use DateTimeInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content;
 use Ibexa\Contracts\Core\Repository\Values\User\User;
@@ -81,7 +81,7 @@ class EzInfoCollectionRepository extends EntityRepository
         try {
             $this->_em->persist($informationCollection);
             $this->_em->flush($informationCollection);
-        } catch (ORMException|ORMInvalidArgumentException $e) {
+        } catch (ORMException|ORMInvalidArgumentException) {
             throw new StoringCollectionFailedException('', '');
         }
     }
@@ -97,7 +97,7 @@ class EzInfoCollectionRepository extends EntityRepository
             }
 
             $this->_em->flush();
-        } catch (ORMException|ORMInvalidArgumentException $e) {
+        } catch (ORMException|ORMInvalidArgumentException) {
             throw new RemoveCollectionFailedException('', '');
         }
     }
@@ -134,12 +134,12 @@ class EzInfoCollectionRepository extends EntityRepository
                 ->select('COUNT(ezc) as children_count')
                 ->getQuery()
                 ->getSingleScalarResult();
-        } catch (NonUniqueResultException|NoResultException $e) {
+        } catch (NonUniqueResultException|NoResultException) {
             throw new RetrieveCountException('', '');
         }
     }
 
-    public function filterByIntervalOfCreation(int $contentId, DateTimeInterface $startDate, DateTimeInterface $endDate, ?int $limit = null, ?int $offeset = null): array
+    public function filterByIntervalOfCreation(int $contentId, DateTimeInterface $startDate, DateTimeInterface $endDate, ?int $limit = null, ?int $offset = null): array
     {
 
         $qb = $this->createQueryBuilder('ezc');
@@ -158,10 +158,10 @@ class EzInfoCollectionRepository extends EntityRepository
 
         if ($limit !== null) {
             $qb->setMaxResults($limit);
-        };
+        }
 
-        if ($offeset !== null) {
-            $qb->setFirstResult($offeset);
+        if ($offset !== null) {
+            $qb->setFirstResult($offset);
         }
 
         return $qb->getQuery()

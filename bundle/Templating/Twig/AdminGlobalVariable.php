@@ -27,10 +27,7 @@ class AdminGlobalVariable
      */
     public function getPageLayoutTemplate(): ?string
     {
-        if ($this->pageLayoutTemplate !== null) {
-            return $this->pageLayoutTemplate;
-        }
-
-        return $this->configResolver->getParameter('admin.pagelayout', 'netgen_information_collection');
+        return $this->pageLayoutTemplate ??
+            $this->configResolver->getParameter('admin.pagelayout', 'netgen_information_collection');
     }
 }

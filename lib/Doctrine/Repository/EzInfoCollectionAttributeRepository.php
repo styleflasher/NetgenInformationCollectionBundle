@@ -7,7 +7,7 @@ namespace Netgen\InformationCollection\Doctrine\Repository;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\ORMException;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content;
 use Ibexa\Contracts\Core\Repository\Values\Content\Field;
@@ -62,7 +62,7 @@ class EzInfoCollectionAttributeRepository extends EntityRepository
         try {
             $this->_em->persist($infoCollectionAttribute);
             $this->_em->flush($infoCollectionAttribute);
-        } catch (ORMException|ORMInvalidArgumentException $exception) {
+        } catch (ORMException|ORMInvalidArgumentException) {
             throw new StoringAttributeFailedException('', '');
         }
     }
@@ -80,7 +80,7 @@ class EzInfoCollectionAttributeRepository extends EntityRepository
             }
 
             $this->_em->flush();
-        } catch (ORMException|ORMInvalidArgumentException $exception) {
+        } catch (ORMException|ORMInvalidArgumentException) {
             throw new RemoveAttributeFailedException('', '');
         }
     }
@@ -137,7 +137,7 @@ class EzInfoCollectionAttributeRepository extends EntityRepository
                 ->select('COUNT(eica) as children_count')
                 ->getQuery()
                 ->getSingleScalarResult();
-        } catch (NonUniqueResultException|NoResultException $exception) {
+        } catch (NonUniqueResultException|NoResultException) {
             throw new RetrieveCountException('', '');
         }
     }

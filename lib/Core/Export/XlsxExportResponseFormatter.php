@@ -45,7 +45,7 @@ final class XlsxExportResponseFormatter implements ExportResponseFormatter
 
         try {
             $activeSheet->setTitle(mb_substr($contentName, 0, 30));
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $activeSheet->setTitle('Information collection export');
         }
 
@@ -71,7 +71,7 @@ final class XlsxExportResponseFormatter implements ExportResponseFormatter
 
         try {
             $activeSheet->setTitle(mb_substr($contentName, 0, 30));
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $activeSheet->setTitle('Information collection export');
         }
 

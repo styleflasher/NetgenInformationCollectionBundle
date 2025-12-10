@@ -31,12 +31,12 @@ services:
     netgen_information_collection.form.extension.field_definition:
         class: Netgen\Bundle\InformationCollectionBundle\Ibexa\ContentForms\FieldDefinitionTypeExtension
         tags:
-            - { name: form.type_extension, extended_type: Ibexa\AdminUi\Form\Type\FieldDefinition\FieldDefinitionType }
+            - { name: form.type_extension }
 
     netgen_information_collection.form.extension.content_field:
         class: Netgen\Bundle\InformationCollectionBundle\Ibexa\ContentForms\ContentFieldTypeExtension
         tags:
-            - { name: form.type_extension, extended_type: Ibexa\ContentForms\Form\Type\Content\ContentFieldType }
+            - { name: form.type_extension }
 
     netgen_information_collection.validator.info_collector:
         class: Netgen\Bundle\InformationCollectionBundle\Ibexa\ContentForms\InfoCollectorContentValidator

@@ -33,18 +33,12 @@ final class Export extends AbstractController
     }
 
     /**
-     * @param int $contentId
-     * @param Request $request
-     *
      * @throws \Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException
      * @throws \Ibexa\Contracts\Core\Repository\Exceptions\UnauthorizedException
-     *
-     * @return Response
      */
-    public function __invoke($contentId, Request $request): Response
+    public function __invoke(int|string $contentId, Request $request): Response
     {
-        $attribute = new Attribute('infocollector', 'export');
-        $this->denyAccessUnlessGranted($attribute);
+        $this->denyAccessUnlessGranted(new Attribute('infocollector', 'export'));
 
         $content = $this->contentService->loadContent((int) $contentId);
 

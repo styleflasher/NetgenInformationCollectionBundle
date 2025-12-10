@@ -59,7 +59,8 @@ class ExportType extends AbstractType implements DataMapperInterface
 
         $availableFormatters = [];
         foreach ($this->exportResponseFormatterRegistry->getExportResponseFormatters() as $formatter) {
-            $availableFormatters['netgen_information_collection_admin_export_type_' . $formatter->getIdentifier()] = $formatter->getIdentifier();
+            $identifier = $formatter->getIdentifier();
+            $availableFormatters['netgen_information_collection_admin_export_type_' . $identifier] = $identifier;
         }
 
         $builder->add('exportType', ChoiceType::class, [
@@ -67,7 +68,7 @@ class ExportType extends AbstractType implements DataMapperInterface
             'choices' => $availableFormatters,
             'translation_domain' => 'netgen_information_collection_admin',
             'label' => 'netgen_information_collection_admin_export_type',
-            'disabled' => empty($availableFormatters) ? true : false,
+            'disabled' => empty($availableFormatters),
             'constraints' => [
                 new Assert\NotBlank(),
             ],
@@ -104,7 +105,7 @@ class ExportType extends AbstractType implements DataMapperInterface
         $builder->add('export', SubmitType::class, [
             'label' => 'netgen_information_collection_admin_export_export',
             'translation_domain' => 'netgen_information_collection_admin',
-            'disabled' => empty($availableFormatters) ? true : false,
+            'disabled' => empty($availableFormatters),
         ]);
 
         $builder->add('cancel', SubmitType::class, [

@@ -20,7 +20,7 @@ class InformationCollectionAdminView implements ViewInterface
 
     protected PagerfantaInterface $pagerfanta;
 
-    protected $routeGenerator;
+    protected Closure $routeGenerator;
 
     protected int $proximity;
 
@@ -55,13 +55,11 @@ class InformationCollectionAdminView implements ViewInterface
      * The route generator can be any callable to generate
      * the routes receiving the page number as first and
      * unique argument.
-     *
-     * @param \Closure $routeGenerator A callable to generate the routes
      */
-    public function render(PagerfantaInterface $pagerfanta, $routeGenerator, array $options = []): string
+    public function render(PagerfantaInterface $pagerfanta, callable $routeGenerator, array $options = []): string
     {
         $this->pagerfanta = $pagerfanta;
-        $this->routeGenerator = $routeGenerator;
+        $this->routeGenerator = $routeGenerator(...);
 
         $this->initializeProximity($options);
         $this->calculateStartAndEndPage();
@@ -106,8 +104,8 @@ class InformationCollectionAdminView implements ViewInterface
             $endPage = $nbPages;
         }
 
-        $this->startPage = (int) $startPage;
-        $this->endPage = (int) $endPage;
+        $this->startPage = $startPage;
+        $this->endPage = $endPage;
     }
 
     /**
@@ -142,7 +140,7 @@ class InformationCollectionAdminView implements ViewInterface
 
         $pages['second_page'] = $this->startPage === 3 ? $this->generateUrl(2) : false;
 
-        $pages['separator_before'] = $this->startPage > 3 ? true : false;
+        $pages['separator_before'] = $this->startPage > 3;
 
         $middlePages = [];
         for ($i = $this->startPage, $end = $this->endPage; $i <= $end; ++$i) {
@@ -151,7 +149,7 @@ class InformationCollectionAdminView implements ViewInterface
 
         $pages['middle_pages'] = $middlePages;
 
-        $pages['separator_after'] = $this->endPage < $this->pagerfanta->getNbPages() - 2 ? true : false;
+        $pages['separator_after'] = $this->endPage < $this->pagerfanta->getNbPages() - 2;
 
         $pages['second_to_last_page'] = $this->endPage === $this->pagerfanta->getNbPages() - 2 ?
             $this->generateUrl($this->pagerfanta->getNbPages() - 1) :

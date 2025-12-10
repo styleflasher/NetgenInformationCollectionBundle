@@ -12,7 +12,7 @@ use Netgen\Bundle\InformationCollectionBundle\Ibexa\ContentForms\InformationColl
 use Netgen\InformationCollection\API\Events;
 use Netgen\InformationCollection\API\Value\Event\InformationCollected;
 use Netgen\InformationCollection\API\Value\InformationCollectionStruct;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;

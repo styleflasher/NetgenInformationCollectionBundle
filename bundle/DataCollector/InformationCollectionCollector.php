@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
 use Netgen\Bundle\InformationCollectionBundle\Ibexa\ContentForms\InformationCollectionType;
+use Throwable;
 
 class InformationCollectionCollector extends DataCollector
 {
@@ -31,7 +32,7 @@ class InformationCollectionCollector extends DataCollector
         $this->translationHelper = $translationHelper;
     }
 
-    public function collect(Request $request, Response $response, \Throwable $exception = null): void
+    public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {
         if ($request->get(InformationCollectionType::FORM_BLOCK_PREFIX) !== null) {
             $this->mapCollectedData($request);
@@ -41,11 +42,6 @@ class InformationCollectionCollector extends DataCollector
 
         $this->data = [];
 
-    }
-
-    public function reset(): void
-    {
-        $this->data = [];
     }
 
     public function getName(): string
@@ -100,7 +96,7 @@ class InformationCollectionCollector extends DataCollector
         $data = $request->get('information_collection');
 
         $contentId = $data['content_id'];
-        $contentTypeId = intval($data['content_type_id']);
+        $contentTypeId = (int) $data['content_type_id'];
         /** @var ContentType $contentType */
         $contentType = $this->repository->sudo(
             function(Repository $repository) use ($contentTypeId) {

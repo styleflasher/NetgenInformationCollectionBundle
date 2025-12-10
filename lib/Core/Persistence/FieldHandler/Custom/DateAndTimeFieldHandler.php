@@ -22,6 +22,8 @@ class DateAndTimeFieldHandler implements CustomLegacyFieldHandlerInterface
         if ($value instanceof DateAndTimeValue) {
             return (string) $value;
         }
+
+        return '';
     }
 
     /**

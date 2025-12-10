@@ -10,7 +10,7 @@ use Netgen\InformationCollection\API\Events;
 use Netgen\InformationCollection\API\Exception\ActionFailedException;
 use Netgen\InformationCollection\API\Value\Event\InformationCollected;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 final class ActionRegistry implements ActionInterface
 {
@@ -38,14 +38,14 @@ final class ActionRegistry implements ActionInterface
 
         foreach ($this->actions as $action) {
             if ($this->utility->isActionAllowedToRun($action, $config)) {
-                $event = $this->eventDispatcher->dispatch($event, Events::BEFORE_ACTION_EXECUTION);
+                $this->eventDispatcher->dispatch($event, Events::BEFORE_ACTION_EXECUTION);
 
                 try {
                     $action->act($event);
 
-                    $event = $this->eventDispatcher->dispatch($event, Events::AFTER_ACTION_EXECUTION);
+                    $this->eventDispatcher->dispatch($event, Events::AFTER_ACTION_EXECUTION);
                 } catch (ActionFailedException $e) {
-                    $event = $this->eventDispatcher->dispatch($event, Events::ACTION_EXECUTION_FAIL);
+                    $this->eventDispatcher->dispatch($event, Events::ACTION_EXECUTION_FAIL);
 
                     $this->logger
                         ->error($e->getMessage());
@@ -55,7 +55,7 @@ final class ActionRegistry implements ActionInterface
                     }
 
                     if ($action instanceof CrucialActionInterface) {
-                        $event = $this->eventDispatcher->dispatch($event, Events::CRUCIAL_ACTION_EXECUTION_FAIL);
+                        $this->eventDispatcher->dispatch($event, Events::CRUCIAL_ACTION_EXECUTION_FAIL);
 
                         break;
                     }

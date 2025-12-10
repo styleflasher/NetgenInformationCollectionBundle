@@ -98,10 +98,8 @@ final class InformationCollected extends Event
 
     /**
      * Sets additional parameter value.
-     *
-     * @param mixed $value
      */
-    public function setAdditionalParameter(string $key, $value): self
+    public function setAdditionalParameter(string $key, mixed $value): self
     {
         $this->additionalParameters[$key] = $value;
 
@@ -112,10 +110,8 @@ final class InformationCollected extends Event
      * Gets additional parameter value.
      *
      * @throws \Netgen\InformationCollection\API\Exception\MissingAdditionalParameterException
-     *
-     * @return mixed
      */
-    public function getAdditionalParameter(string $key)
+    public function getAdditionalParameter(string $key): mixed
     {
         if (!array_key_exists($key, $this->additionalParameters)) {
             throw new MissingAdditionalParameterException($key);

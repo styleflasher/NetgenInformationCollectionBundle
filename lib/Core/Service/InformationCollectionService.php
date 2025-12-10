@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Netgen\InformationCollection\Core\Service;
 
-use Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException;
 use Ibexa\Contracts\Core\Repository\Repository;
 use Ibexa\Contracts\Core\Repository\Values\User\User;
 use Netgen\InformationCollection\API\Exception\PersistingFailedException;
@@ -235,18 +234,18 @@ class InformationCollectionService implements InformationCollection
 
     public function deleteCollections(FilterCollections $collections): void
     {
-        $collections = $this->ezInfoCollectionRepository
+        $loadedCollections = $this->ezInfoCollectionRepository
             ->findBy([
                 'contentObjectId' => $collections->getContentId(),
                 'id' => $collections->getCollectionIds(),
             ]);
 
-        foreach ($collections as $collection) {
+        foreach ($loadedCollections as $collection) {
             $attributes = $this->ezInfoCollectionAttributeRepository->findBy(['informationCollectionId' => $collection->getId()]);
             $this->ezInfoCollectionAttributeRepository->remove($attributes);
         }
 
-        $this->ezInfoCollectionRepository->remove($collections);
+        $this->ezInfoCollectionRepository->remove($loadedCollections);
     }
 
     public function deleteCollectionByContent(Contents $contents): void
@@ -271,12 +270,9 @@ class InformationCollectionService implements InformationCollection
 
     protected function getUser(int $userId): User
     {
-        try {
-            return $this->repository
-                ->getUserService()
-                ->loadUser($userId);
-        } catch (NotFoundException $exception) {
-        }
+        return $this->repository
+            ->getUserService()
+            ->loadUser($userId);
     }
 
     protected function loadCollection(int $collectionId): Collection

@@ -12,7 +12,7 @@ use Twig\TemplateWrapper;
 
 class FieldRenderingRuntime
 {
-    public const FIELD_VIEW_SUFFIX = '_field';
+    public const string FIELD_VIEW_SUFFIX = '_field';
 
     protected Environment $environment;
 

@@ -9,7 +9,6 @@ use Netgen\InformationCollection\API\Service\InformationCollection;
 use Netgen\InformationCollection\API\Value\Attribute;
 use Netgen\InformationCollection\API\Value\Export\Export;
 use Netgen\InformationCollection\API\Value\Export\ExportCriteria;
-use Netgen\InformationCollection\API\Value\Filter\ContentId;
 use Netgen\InformationCollection\Core\Persistence\ContentTypeUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use function array_values;

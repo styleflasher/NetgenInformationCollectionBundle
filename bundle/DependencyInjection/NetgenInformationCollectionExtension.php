@@ -7,23 +7,22 @@ use Ibexa\Bundle\Core\DependencyInjection\Configuration\SiteAccessAware\Contextu
 use Ibexa\Core\Helper\TranslationHelper;
 use Netgen\InformationCollection\API\Action\ActionInterface;
 use Netgen\InformationCollection\API\ConfigurationConstants;
+use Netgen\InformationCollection\Core\Export\CsvExportResponseFormatter;
+use Netgen\InformationCollection\Core\Export\XlsExportResponseFormatter;
+use Netgen\InformationCollection\Core\Export\XlsxExportResponseFormatter;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader;
 use Symfony\Component\DependencyInjection\Reference;
-use Symfony\Component\HttpKernel\DependencyInjection\Extension;
+use Symfony\Component\DependencyInjection\Extension\Extension;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Yaml\Yaml;
-use function array_merge;
+use League\Csv\Writer;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
-/**
- * This is the class that loads and manages your bundle configuration.
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html}
- */
 class NetgenInformationCollectionExtension extends Extension implements PrependExtensionInterface
 {
     public function load(array $configs, ContainerBuilder $container): void
@@ -33,8 +32,6 @@ class NetgenInformationCollectionExtension extends Extension implements PrependE
 
         $bundleResourceLoader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $bundleResourceLoader->load('services.yml');
-//        $loader->load('parameters.yml');
-//        $loader->load('default_settings.yml');
 
 
         $libResourceLoader = new Loader\YamlFileLoader($container, new FileLocator(__DIR__ . '/../../lib/Resources/config'));
@@ -42,30 +39,7 @@ class NetgenInformationCollectionExtension extends Extension implements PrependE
         $libResourceLoader->load('parameters.yml');
         $libResourceLoader->load('default_settings.yml');
 
-
         $this->processSemanticConfig($container, $config);
-//        $processor = new ConfigurationProcessor($container, ConfigurationConstants::SETTINGS_ROOT);
-//        $configArrays = array(
-//            ConfigurationConstants::ACTIONS,
-//            ConfigurationConstants::ACTION_CONFIG,
-//        );
-//
-//        $scopes = array_merge(array('default'), $container->getParameter('ibexa.site_access.list'));
-//
-//        foreach ($configArrays as $configArray) {
-//            $processor->mapConfigArray($configArray, $config);
-//            foreach ($scopes as $scope) {
-//                $paramName = ConfigurationConstants::SETTINGS_ROOT . '.' . $scope . '.' . $configArray;
-//                if (!$container->hasParameter($paramName)) {
-//                    continue;
-//                }
-//
-//                $scopeConfig = $container->getParameter($paramName);
-//                foreach ((array) $scopeConfig as $key => $value) {
-//                    $container->setParameter($paramName . '.' . $key, $value);
-//                }
-//            }
-//        }
 
         $this->setUpAutoConfiguration($container);
         $this->registerServiceDefinitions($container);
@@ -77,9 +51,6 @@ class NetgenInformationCollectionExtension extends Extension implements PrependE
         $this->addDoctrineConfig($container);
     }
 
-    /**
-     * Processes semantic config and translates it to container parameters.
-     */
     private function processSemanticConfig(ContainerBuilder $container, array $config): void
     {
         $processor = new ConfigurationProcessor($container, ConfigurationConstants::SETTINGS_ROOT);
@@ -121,8 +92,6 @@ class NetgenInformationCollectionExtension extends Extension implements PrependE
             'twig.yml' => 'twig',
         );
 
-        $activatedBundles = array_keys($container->getParameter('kernel.bundles'));
-
         foreach ($configs as $fileName => $extensionName) {
             $configFile = __DIR__ . '/../../lib/Resources/config/' . $fileName;
             $config = Yaml::parse((string)file_get_contents($configFile));
@@ -141,9 +110,9 @@ class NetgenInformationCollectionExtension extends Extension implements PrependE
     {
         $definitions = [];
 
-        if (class_exists('\League\Csv\Writer')) {
+        if (class_exists(Writer::class)) {
             $csvExportFormatter = new Definition(
-                \Netgen\InformationCollection\Core\Export\CsvExportResponseFormatter::class
+                CsvExportResponseFormatter::class
             );
             $csvExportFormatter->addTag('netgen_information_collection.export.formatter');
             $csvExportFormatter->addArgument(new Reference(TranslationHelper::class));
@@ -156,9 +125,9 @@ class NetgenInformationCollectionExtension extends Extension implements PrependE
             $definitions[] = $csvExportFormatter;
         }
 
-        if (class_exists('\PhpOffice\PhpSpreadsheet\Spreadsheet')) {
+        if (class_exists(Spreadsheet::class)) {
             $xlsExportFormatter = new Definition(
-                \Netgen\InformationCollection\Core\Export\XlsExportResponseFormatter::class
+                XlsExportResponseFormatter::class
             );
             $xlsExportFormatter->addTag('netgen_information_collection.export.formatter');
             $xlsExportFormatter->addArgument(new Reference(TranslationHelper::class));
@@ -168,7 +137,7 @@ class NetgenInformationCollectionExtension extends Extension implements PrependE
             $xlsExportFormatter->setAutoconfigured(false);
 
             $xlsxExportFormatter = new Definition(
-                \Netgen\InformationCollection\Core\Export\XlsxExportResponseFormatter::class
+                XlsxExportResponseFormatter::class
             );
             $xlsxExportFormatter->addTag('netgen_information_collection.export.formatter');
             $xlsxExportFormatter->addArgument(new Reference(TranslationHelper::class));

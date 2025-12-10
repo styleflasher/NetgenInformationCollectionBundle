@@ -32,12 +32,11 @@ class AnonymizerService implements Anonymizer
         $this->fieldAnonymizerVisitor = $fieldAnonymizerVisitor;
     }
 
-    public function anonymizeCollection(int $collectionId, array $fields = []): void
+    public function anonymizeCollection(int $collection, array $fields = []): void
     {
-        $collectionId = new CollectionId($collectionId);
-        $collection = $this->informationCollection->getCollection($collectionId);
+        $loadedCollection = $this->informationCollection->getCollection(new CollectionId($collection));
 
-        $this->destroyData($collection, $fields);
+        $this->destroyData($loadedCollection, $fields);
     }
 
     /**

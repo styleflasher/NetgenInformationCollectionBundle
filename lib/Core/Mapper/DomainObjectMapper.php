@@ -10,7 +10,6 @@ use Ibexa\Contracts\Core\Repository\ContentService;
 use Ibexa\Contracts\Core\Repository\ContentTypeService;
 use Ibexa\Contracts\Core\Repository\Exceptions\NotFoundException;
 use Ibexa\Contracts\Core\Repository\Repository;
-use Ibexa\Contracts\Core\Repository\UserService;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content as APIContent;
 use Ibexa\Contracts\Core\Repository\Values\Content\Field;
 use Ibexa\Contracts\Core\Repository\Values\ContentType\FieldDefinition;
@@ -33,8 +32,6 @@ final class DomainObjectMapper
 
     private ContentTypeService $contentTypeService;
 
-    private UserService $userService;
-
     public function __construct(Repository $repository)
     {
         $this->repository = $repository;
@@ -46,7 +43,7 @@ final class DomainObjectMapper
     {
         $content = $this->contentService->loadContent((int) $data['content_id']);
         $contentType = $this->contentTypeService->loadContentType($content->contentInfo->contentTypeId);
-        $hasLocation = empty($object['main_node_id']) ? false : true;
+        $hasLocation = !empty($object['main_node_id']);
 
         return new Content(
             $content,
@@ -120,7 +117,7 @@ final class DomainObjectMapper
             return $this->repository
                 ->getUserService()
                 ->loadUser($userId);
-        } catch (NotFoundException $exception) {
+        } catch (NotFoundException) {
         }
 
         return new NullUser();
@@ -133,7 +130,6 @@ final class DomainObjectMapper
 
     private function getFieldDefinition(FieldDefinitionCollection $fieldDefinitionCollection, EzInfoCollectionAttribute $attribute): ?FieldDefinition
     {
-        /** @var FieldDefinitionCollection $collection */
         $collection = $fieldDefinitionCollection->filter(
             static fn (FieldDefinition $definition): bool => $definition->id === $attribute->getContentClassAttributeId()
         );

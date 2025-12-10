@@ -58,7 +58,7 @@ final class AnonymizerServiceFacade
         foreach ($fieldIdentifiers as $identifier) {
             try {
                 $ids[] = $this->contentTypeUtils->getFieldId($contentId, $identifier);
-            } catch (OutOfBoundsException $e) {
+            } catch (OutOfBoundsException) {
                 continue;
             }
         }

@@ -21,6 +21,8 @@ abstract class AbstractProvider implements EmailDataProviderInterface
 
     protected Environment $twig;
 
+    protected mixed $config;
+
     public function __construct(
         ConfigResolverInterface $configResolver,
         TranslationHelper $translationHelper,

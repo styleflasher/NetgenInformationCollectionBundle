@@ -7,6 +7,7 @@ namespace Netgen\InformationCollection\Core\EmailDataProvider;
 use Netgen\InformationCollection\API\Action\EmailDataProviderInterface;
 use Netgen\InformationCollection\API\Value\Event\InformationCollected;
 use Symfony\Component\Mime\Email;
+use Symfony\Component\Mime\Header\UnstructuredHeader;
 
 class AutoResponderProvider implements EmailDataProviderInterface
 {
@@ -15,7 +16,7 @@ class AutoResponderProvider implements EmailDataProviderInterface
         $email = new Email();
 
         $headers = $email->getHeaders();
-        $headers->add('Content-Type', '');
+        $headers->add(new UnstructuredHeader('Content-Type', ''));
 
         return $email;
     }

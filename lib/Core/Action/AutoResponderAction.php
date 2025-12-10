@@ -69,6 +69,6 @@ final class AutoResponderAction implements ActionInterface
 
     protected function throwException(EmailNotSentException $exception): void
     {
-        throw new ActionFailedException(static::$defaultName, $exception->getMessage());
+        throw new ActionFailedException(self::$defaultName, $exception->getMessage());
     }
 }

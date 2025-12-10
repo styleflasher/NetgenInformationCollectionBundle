@@ -12,9 +12,7 @@ use Netgen\InformationCollection\API\Service\CaptchaService as CaptchaServiceInt
 use Netgen\InformationCollection\API\Service\CaptchaValue;
 use Netgen\InformationCollection\API\Value\Captcha\NullObject;
 use Netgen\InformationCollection\API\Value\Captcha\ReCaptcha;
-use function array_keys;
 use function array_replace;
-use function in_array;
 
 class CaptchaService implements CaptchaServiceInterface
 {
@@ -22,13 +20,10 @@ class CaptchaService implements CaptchaServiceInterface
 
     protected ContentTypeService $contentTypeService;
 
-    private ConfigResolverInterface $configResolver;
-
     public function __construct(ContentTypeService $contentTypeService, ConfigResolverInterface $configResolver)
     {
         $this->config = $configResolver->getParameter('captcha', 'netgen_information_collection');
         $this->contentTypeService = $contentTypeService;
-        $this->configResolver = $configResolver;
     }
 
     public function isEnabled(Location $location): bool
@@ -108,7 +103,7 @@ class CaptchaService implements CaptchaServiceInterface
     protected function hasConfigForContentType(ContentType $contentType): bool
     {
         if (!empty($this->config['override_by_type'])) {
-            if (in_array($contentType->identifier, array_keys($this->config['override_by_type']), true)) {
+            if (array_key_exists($contentType->identifier, $this->config['override_by_type'])) {
                 return true;
             }
         }

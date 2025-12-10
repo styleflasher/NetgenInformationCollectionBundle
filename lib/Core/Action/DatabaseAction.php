@@ -30,7 +30,7 @@ final class DatabaseAction implements ActionInterface, CrucialActionInterface
             $this->informationCollection
                 ->createCollection($struct);
         } catch (PersistingFailedException $e) {
-            throw new ActionFailedException(static::$defaultName, $e->getMessage());
+            throw new ActionFailedException(self::$defaultName, $e->getMessage());
         }
     }
 }

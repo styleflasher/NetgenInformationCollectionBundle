@@ -11,11 +11,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class FieldDefinitionTypeExtension extends AbstractTypeExtension
 {
-    public function getExtendedType(): string
-    {
-        return FieldDefinitionType::class;
-    }
-
     public static function getExtendedTypes(): iterable
     {
         return [FieldDefinitionType::class];

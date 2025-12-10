@@ -34,7 +34,7 @@ class EmailDataFactory implements EmailContentFactoryInterface
     protected TranslationHelper $translationHelper;
     protected FieldHelper $fieldHelper;
     protected Environment $twig;
-    protected $config;
+    protected mixed $config;
 
     public function __construct(
         ConfigResolverInterface $configResolver,

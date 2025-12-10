@@ -11,14 +11,11 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use DateTimeInterface;
 use DateInterval;
 use Exception;
 
 class DataAnonymizerCommand extends Command
 {
-    protected static $defaultName = 'nginfocollector:anonymize';
-
     protected AnonymizerServiceFacade $anonymizer;
 
     protected DateInterval $period;
@@ -74,7 +71,7 @@ class DataAnonymizerCommand extends Command
             return 1;
         }
 
-        $contentId = intval($input->getOption('content-id'));
+        $contentId = (int) $input->getOption('content-id');
         $fields = $this->getFields($input);
 
         $info = sprintf("Command will anonymize <info>%s</info> fields for content #%d", empty($fields) ? 'all': implode(", ", $fields), $contentId);
@@ -103,7 +100,7 @@ class DataAnonymizerCommand extends Command
                 if (is_string($period)) {
                     $this->period = new DateInterval($period);
                 }
-            } catch (Exception $exception) {
+            } catch (Exception) {
                 $output->writeln("Please enter valid DateInterval string.");
                 exit(0);
             }
@@ -160,8 +157,6 @@ class DataAnonymizerCommand extends Command
 
     protected function getDateFromPeriod(): DateTimeImmutable
     {
-        $dt = new DateTimeImmutable();
-
-        return $dt->sub($this->period);
+        return (new DateTimeImmutable())->sub($this->period);
     }
 }

@@ -18,7 +18,7 @@ class Email extends FieldAnonymizerVisitor
 
     public function accept(Attribute $attribute, ContentType $contentType): bool
     {
-        return 'ezemail' === $attribute->getFieldDefinition()->fieldTypeIdentifier;
+        return 'ibexa_email' === $attribute->getFieldDefinition()->fieldTypeIdentifier;
     }
 
     public function visit(Attribute $attribute, ContentType $contentType): AttributeValue

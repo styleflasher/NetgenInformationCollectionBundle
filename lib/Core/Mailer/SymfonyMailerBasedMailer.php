@@ -22,7 +22,7 @@ class SymfonyMailerBasedMailer implements MailerInterface
     {
         try {
             $this->mailer->send($content);
-        } catch (Throwable $t) {
+        } catch (Throwable) {
         }
     }
 }

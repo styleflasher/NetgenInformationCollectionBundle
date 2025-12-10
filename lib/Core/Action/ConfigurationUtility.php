@@ -13,13 +13,13 @@ use function sprintf;
 
 final class ConfigurationUtility
 {
-    private array $actionsdConfiguration;
+    private array $actionsConfiguration;
 
     private array $singleActionConfiguration;
 
     public function __construct(ConfigResolverInterface $configResolver)
     {
-        $this->actionsdConfiguration = $configResolver->getParameter('actions', 'netgen_information_collection');
+        $this->actionsConfiguration = $configResolver->getParameter('actions', 'netgen_information_collection');
         $this->singleActionConfiguration = $configResolver->getParameter('action_config', 'netgen_information_collection');
     }
 
@@ -27,11 +27,11 @@ final class ConfigurationUtility
     {
         $identifier = new Identifier($action);
 
-        if (in_array($identifier->getPrimary(), $config, false)) {
+        if (in_array($identifier->getPrimary(), $config, true)) {
             return true;
         }
 
-        if (in_array($identifier->getSecondary(), $config, false)) {
+        if (in_array($identifier->getSecondary(), $config, true)) {
             return true;
         }
 
@@ -42,11 +42,11 @@ final class ConfigurationUtility
     {
         $identifier = new Identifier($action);
 
-        if (in_array($identifier->getPrimary(), $this->singleActionConfiguration, false)) {
+        if (in_array($identifier->getPrimary(), $this->singleActionConfiguration, true)) {
             return $this->singleActionConfiguration[$identifier->getPrimary()];
         }
 
-        if (in_array($identifier->getSecondary(), $this->singleActionConfiguration, false)) {
+        if (in_array($identifier->getSecondary(), $this->singleActionConfiguration, true)) {
             return $this->singleActionConfiguration[$identifier->getSecondary()];
         }
 
@@ -59,12 +59,12 @@ final class ConfigurationUtility
      */
     public function getConfigPerContentType(ContentType $contentType): array
     {
-        if (!empty($this->actionsdConfiguration['content_types'][$contentType->identifier])) {
-            return $this->actionsdConfiguration['content_types'][$contentType->identifier];
+        if (!empty($this->actionsConfiguration['content_types'][$contentType->identifier])) {
+            return $this->actionsConfiguration['content_types'][$contentType->identifier];
         }
 
-        if (!empty($this->actionsdConfiguration['default'])) {
-            return $this->actionsdConfiguration['default'];
+        if (!empty($this->actionsConfiguration['default'])) {
+            return $this->actionsConfiguration['default'];
         }
 
         return [];

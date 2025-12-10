@@ -3,17 +3,11 @@
 namespace Netgen\Bundle\InformationCollectionBundle\DependencyInjection;
 
 use Ibexa\Bundle\Core\DependencyInjection\Configuration\SiteAccessAware\Configuration as SiteAccessConfiguration;
-use Netgen\InformationCollection\Core\Action\EmailAction;
 use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Netgen\InformationCollection\API\ConfigurationConstants;
 
-/**
- * This is the class that validates and merges configuration from your app/config files.
- *
- * To learn more see {@link http://symfony.com/doc/current/cookbook/bundles/extension.html#cookbook-bundles-extension-config-class}
- */
 class Configuration extends SiteAccessConfiguration
 {
     public function getConfigTreeBuilder(): TreeBuilder
@@ -23,6 +17,7 @@ class Configuration extends SiteAccessConfiguration
 
         if ($rootNode instanceof ArrayNodeDefinition) {
             $nodeBuilder = $this->generateScopeBaseNode($rootNode);
+
             $this->addCaptchaSection($nodeBuilder);
             $this->addActionsSection($nodeBuilder);
             $this->addActionConfigSection($nodeBuilder);

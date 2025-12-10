@@ -32,8 +32,6 @@ use const PHP_INT_MAX;
 
 final class DeleteOldCollectedInfoCommand extends Command
 {
-    protected static $defaultName = 'nginfocollector:delete';
-
     private DateInterval $period;
     private InformationCollection $infoCollection;
     private StyleInterface $io;
@@ -65,10 +63,24 @@ final class DeleteOldCollectedInfoCommand extends Command
         $this->addUsage('--content-id=123 --field-identifiers=title,name,last_name');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): int
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->io = new SymfonyStyle($input, $output);
 
+        try {
+            $period = $input->getOption('period');
+            if (is_string($period)) {
+                $this->period = new DateInterval($period);
+            }
+        } catch (Exception) {
+            $output->writeln('Please enter valid DateInterval string.');
+
+            exit(0);
+        }
+    }
+
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
         if ($input->getOption('content-id') === null) {
             $this->io->error('Missing content-id parameter.');
         }
@@ -97,9 +109,7 @@ final class DeleteOldCollectedInfoCommand extends Command
             );
             $collections = $this->infoCollection->filterCollections($filterCriteria);
 
-            $collectionsIds = array_map(function($collection) {
-                return $collection->getId();
-            }, $collections->getCollections());
+            $collectionsIds = array_map(static fn ($collection) => $collection->getId(), $collections->getCollections());
             $filterCollections = new Value\Filter\Collections($contentId, $collectionsIds);
 
             $this->infoCollection->deleteCollections($filterCollections);
@@ -113,20 +123,6 @@ final class DeleteOldCollectedInfoCommand extends Command
         $this->io->info('Canceled.');
 
         return 0;
-    }
-
-    protected function initialize(InputInterface $input, OutputInterface $output): void
-    {
-        try {
-            $period = $input->getOption('period');
-            if (is_string($period)) {
-                $this->period = new DateInterval($period);
-            }
-        } catch (Exception $exception) {
-            $output->writeln('Please enter valid DateInterval string.');
-
-            exit(0);
-        }
     }
 
     private function getFields(InputInterface $input): array
@@ -155,8 +151,6 @@ final class DeleteOldCollectedInfoCommand extends Command
 
     private function getDateFromPeriod(): DateTimeImmutable
     {
-        $dt = new DateTimeImmutable();
-
-        return $dt->sub($this->period);
+        return (new DateTimeImmutable())->sub($this->period);
     }
 }

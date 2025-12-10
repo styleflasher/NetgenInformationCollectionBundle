@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class InformationCollectionType extends AbstractType implements DataMapperInterface
 {
-    public const FORM_BLOCK_PREFIX = 'information_collection';
+    public const string FORM_BLOCK_PREFIX = 'information_collection';
 
     private CaptchaService $captchaService;
 

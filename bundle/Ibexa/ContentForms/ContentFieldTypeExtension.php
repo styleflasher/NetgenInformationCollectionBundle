@@ -10,11 +10,6 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ContentFieldTypeExtension extends AbstractTypeExtension
 {
-    public function getExtendedType(): string
-    {
-        return ContentFieldType::class;
-    }
-
     public static function getExtendedTypes(): iterable
     {
         return [ContentFieldType::class];
@@ -25,7 +20,7 @@ class ContentFieldTypeExtension extends AbstractTypeExtension
         $fieldIdentifier = $builder->getName();
 
         /** @var \Ibexa\ContentForms\Data\Content\ContentUpdateData $updateStruct */
-        $updateStruct = $options['contentUpdateStruct'];
+        $updateStruct = $options['struct'];
 
         if ($updateStruct === null) {
             return;

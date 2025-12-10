@@ -6,9 +6,9 @@ namespace Netgen\InformationCollection\API;
 
 final class Permissions
 {
-    public const NAME = 'infocollector';
-    public const POLICY_READ = 'read';
-    public const POLICY_DELETE = 'delete';
-    public const POLICY_EXPORT = 'export';
-    public const POLICY_ANONYMIZE = 'anonymize';
+    public const string NAME = 'infocollector';
+    public const string POLICY_READ = 'read';
+    public const string POLICY_DELETE = 'delete';
+    public const string POLICY_EXPORT = 'export';
+    public const string POLICY_ANONYMIZE = 'anonymize';
 }

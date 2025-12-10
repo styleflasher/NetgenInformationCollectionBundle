@@ -14,6 +14,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xls;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Exception;
 
 use function header;
 use function mb_substr;
@@ -49,7 +50,7 @@ final class XlsExportResponseFormatter implements ExportResponseFormatter
 
         try {
             $activeSheet->setTitle(mb_substr($contentName, 0, 30));
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $activeSheet->setTitle('Information collection export');
         }
 
@@ -80,7 +81,7 @@ final class XlsExportResponseFormatter implements ExportResponseFormatter
 
         try {
             $activeSheet->setTitle(mb_substr($contentName, 0, 30));
-        } catch (Exception $exception) {
+        } catch (Exception) {
             $activeSheet->setTitle('Information collection export');
         }
 
