@@ -11,6 +11,7 @@ use Ibexa\Contracts\Core\Repository\Values\ContentType\ContentType;
 use Netgen\InformationCollection\API\Exception\MissingAdditionalParameterException;
 use Netgen\InformationCollection\API\Value\InformationCollectionStruct;
 use Symfony\Contracts\EventDispatcher\Event;
+
 use function array_key_exists;
 
 final class InformationCollected extends Event
@@ -24,7 +25,7 @@ final class InformationCollected extends Event
     public function __construct(
         InformationCollectionStruct $struct,
         array $options,
-        array $additionalParameters = []
+        array $additionalParameters = [],
     ) {
         $this->struct = $struct;
         $this->options = $options;

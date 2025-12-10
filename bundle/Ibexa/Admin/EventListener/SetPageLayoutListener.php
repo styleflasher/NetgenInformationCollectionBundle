@@ -10,6 +10,8 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
+use function in_array;
+
 class SetPageLayoutListener implements EventSubscriberInterface
 {
     protected AdminGlobalVariable $globalVariable;
@@ -21,7 +23,7 @@ class SetPageLayoutListener implements EventSubscriberInterface
     public function __construct(
         AdminGlobalVariable $adminGlobalVariable,
         array $groupsBySiteAccess,
-        string $pageLayoutTemplate
+        string $pageLayoutTemplate,
     ) {
         $this->globalVariable = $adminGlobalVariable;
         $this->pageLayoutTemplate = $pageLayoutTemplate;

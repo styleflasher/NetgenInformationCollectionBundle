@@ -15,9 +15,9 @@ use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-
 use Symfony\Component\Console\Style\StyleInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+
 use function array_filter;
 use function array_map;
 use function array_unique;
@@ -99,7 +99,7 @@ final class DeleteOldCollectedInfoCommand extends Command
         $info = sprintf('Command will delete %s fields for content #%d', count($fields) === 0 ? 'all' : implode(', ', $fields), $contentId);
         $this->io->info($info);
 
-        if ($this->io->confirm('Continue with this action? y/n ', false)){
+        if ($this->io->confirm('Continue with this action? y/n ', false)) {
             $this->io->info('Running....');
 
             $filterCriteria = new Value\Filter\FilterCriteria(

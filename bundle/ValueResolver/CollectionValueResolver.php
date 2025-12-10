@@ -1,5 +1,6 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Netgen\Bundle\InformationCollectionBundle\ValueResolver;
 
@@ -10,9 +11,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Controller\ValueResolverInterface;
 use Symfony\Component\HttpKernel\ControllerMetadata\ArgumentMetadata;
 
+use function is_a;
+
 final class CollectionValueResolver implements ValueResolverInterface
 {
-    protected InformationCollection $informationCollection;
+    private InformationCollection $informationCollection;
 
     public function __construct(InformationCollection $informationCollection)
     {

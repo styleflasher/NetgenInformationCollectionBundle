@@ -32,6 +32,7 @@ use Netgen\InformationCollection\Core\Mapper\DomainObjectMapper;
 use Netgen\InformationCollection\Core\Persistence\Gateway\DoctrineDatabase;
 use Netgen\InformationCollection\Doctrine\Repository\EzInfoCollectionAttributeRepository;
 use Netgen\InformationCollection\Doctrine\Repository\EzInfoCollectionRepository;
+
 use function count;
 
 class InformationCollectionService implements InformationCollection
@@ -54,7 +55,7 @@ class InformationCollectionService implements InformationCollection
         Repository $repository,
         DoctrineDatabase $gateway,
         FieldValueFactoryInterface $factory,
-        DomainObjectMapper $objectMapper
+        DomainObjectMapper $objectMapper,
     ) {
         $this->ezInfoCollectionRepository = $ezInfoCollectionRepository;
         $this->ezInfoCollectionAttributeRepository = $ezInfoCollectionAttributeRepository;
@@ -74,7 +75,7 @@ class InformationCollectionService implements InformationCollection
             ->getCurrentUserReference();
 
         $user = $this->getUser(
-            $userReference->getUserId()
+            $userReference->getUserId(),
         );
 
         $ezInfo = $this->ezInfoCollectionRepository
@@ -106,7 +107,7 @@ class InformationCollectionService implements InformationCollection
     public function getObjectsWithCollectionsCount(): ObjectCount
     {
         return new ObjectCount(
-            $this->gateway->getContentsWithCollectionsCount()
+            $this->gateway->getContentsWithCollectionsCount(),
         );
     }
 
@@ -125,7 +126,7 @@ class InformationCollectionService implements InformationCollection
                     $object,
                     $this->ezInfoCollectionRepository->getFirstCollection($contentId),
                     $this->ezInfoCollectionRepository->getLastCollection($contentId),
-                    $childCount
+                    $childCount,
                 );
         }
 
@@ -135,7 +136,7 @@ class InformationCollectionService implements InformationCollection
     public function getCollectionsCount(ContentId $contentId): CollectionCount
     {
         return new CollectionCount(
-            $this->ezInfoCollectionRepository->getChildrenCount($contentId->getContentId())
+            $this->ezInfoCollectionRepository->getChildrenCount($contentId->getContentId()),
         );
     }
 
@@ -147,7 +148,7 @@ class InformationCollectionService implements InformationCollection
             ],
             [],
             $contentId->getLimit(),
-            $contentId->getOffset()
+            $contentId->getOffset(),
         );
 
         $objects = [];
@@ -165,7 +166,7 @@ class InformationCollectionService implements InformationCollection
             $criteria->getFrom(),
             $criteria->getTo(),
             $criteria->getContentId()->getLimit(),
-            $criteria->getContentId()->getOffset()
+            $criteria->getContentId()->getOffset(),
         );
 
         $objects = [];
@@ -185,7 +186,7 @@ class InformationCollectionService implements InformationCollection
         $collections = $this->ezInfoCollectionRepository->findBy(
             [
                 'id' => $collections,
-            ]
+            ],
         );
 
         return new SearchCount(count($collections));
@@ -202,7 +203,7 @@ class InformationCollectionService implements InformationCollection
             ],
             [],
             $query->getLimit(),
-            $query->getOffset()
+            $query->getOffset(),
         );
 
         $objects = [];
@@ -226,7 +227,7 @@ class InformationCollectionService implements InformationCollection
                     'contentObjectId' => $collectionFields->getContentId(),
                     'informationCollectionId' => $collectionFields->getCollectionId(),
                     'contentClassAttributeId' => $collectionFields->getFields(),
-                ]
+                ],
             );
 
         $this->ezInfoCollectionAttributeRepository->remove($attributes);
@@ -281,7 +282,7 @@ class InformationCollectionService implements InformationCollection
         $attributes = $this->ezInfoCollectionAttributeRepository->findBy(
             [
                 'informationCollectionId' => $collectionId,
-            ]
+            ],
         );
 
         return $this->objectMapper->mapCollection($collection, $attributes);

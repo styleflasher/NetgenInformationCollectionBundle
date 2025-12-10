@@ -9,6 +9,7 @@ use Ibexa\Core\FieldType\Country\Value as CountryValue;
 use Ibexa\Core\FieldType\Value;
 use Netgen\InformationCollection\API\FieldHandler\CustomLegacyFieldHandlerInterface;
 use Netgen\InformationCollection\API\Value\Legacy\FieldValue;
+
 use function array_column;
 use function implode;
 

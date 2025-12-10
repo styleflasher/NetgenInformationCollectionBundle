@@ -25,7 +25,7 @@ final class Export extends AbstractController
     public function __construct(
         ContentService $contentService,
         Exporter $exporter,
-        ExportResponseFormatterRegistry $formatterRegistry
+        ExportResponseFormatterRegistry $formatterRegistry,
     ) {
         $this->contentService = $contentService;
         $this->exporter = $exporter;
@@ -53,8 +53,8 @@ final class Export extends AbstractController
                     'netgen_information_collection.route.admin.collection_list',
                     [
                         'contentId' => $contentId,
-                    ]
-                )
+                    ],
+                ),
             );
         }
 
@@ -73,7 +73,7 @@ final class Export extends AbstractController
             [
                 'content' => $content,
                 'form' => $form->createView(),
-            ]
+            ],
         );
     }
 }

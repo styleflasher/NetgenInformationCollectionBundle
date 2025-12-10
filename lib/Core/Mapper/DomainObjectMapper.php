@@ -51,7 +51,7 @@ final class DomainObjectMapper
             $this->mapCollection($first, []),
             $this->mapCollection($last, []),
             $childCount,
-            $hasLocation
+            $hasLocation,
         );
     }
 
@@ -62,7 +62,7 @@ final class DomainObjectMapper
         /** @var CoreContentType $contentType */
         $contentType = $this->contentTypeService
             ->loadContentType(
-                $content->contentInfo->contentTypeId
+                $content->contentInfo->contentTypeId,
             );
 
         $fieldDefinitions = $contentType->getFieldDefinitions();
@@ -86,7 +86,7 @@ final class DomainObjectMapper
             $user,
             $this->getDateTime($collection->getCreated()),
             $this->getDateTime($collection->getModified()),
-            $attributeValues
+            $attributeValues,
         );
     }
 
@@ -107,7 +107,7 @@ final class DomainObjectMapper
             $attribute->getId(),
             $classField,
             $fieldDefinition,
-            $value
+            $value,
         );
     }
 
@@ -131,7 +131,7 @@ final class DomainObjectMapper
     private function getFieldDefinition(FieldDefinitionCollection $fieldDefinitionCollection, EzInfoCollectionAttribute $attribute): ?FieldDefinition
     {
         $collection = $fieldDefinitionCollection->filter(
-            static fn (FieldDefinition $definition): bool => $definition->id === $attribute->getContentClassAttributeId()
+            static fn (FieldDefinition $definition): bool => $definition->id === $attribute->getContentClassAttributeId(),
         );
 
         if ($collection->isEmpty()) {

@@ -8,6 +8,7 @@ use Ibexa\Contracts\Core\Repository\ContentService;
 use Ibexa\Contracts\Core\Repository\ContentTypeService;
 use Ibexa\Contracts\Core\Repository\Values\ContentType\FieldDefinition;
 use OutOfBoundsException;
+
 use function sprintf;
 
 final class ContentTypeUtils

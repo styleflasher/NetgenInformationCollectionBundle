@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Netgen\InformationCollection\API\Value;
 
-class AttributeValue extends ValueObject
+class AttributeValue extends ValueObject implements \Stringable
 {
     protected int $dataInt;
 

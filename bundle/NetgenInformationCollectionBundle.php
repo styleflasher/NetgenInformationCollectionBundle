@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Netgen\Bundle\InformationCollectionBundle;
 
 use Ibexa\Bundle\Core\DependencyInjection\IbexaCoreExtension;

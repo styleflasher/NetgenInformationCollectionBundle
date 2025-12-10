@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Netgen\Bundle\InformationCollectionBundle\Form;
 
 use Netgen\Bundle\InformationCollectionBundle\Listener\CaptchaValidationListener;
@@ -42,7 +44,7 @@ class CaptchaType extends AbstractType
                 'captcha_action' => null,
                 'site_key' => null,
                 'captcha_value' => null,
-            ]
+            ],
         );
         $resolver
 //            ->setAllowedTypes('captcha_value', CaptchaValue::class)

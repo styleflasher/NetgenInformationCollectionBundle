@@ -16,14 +16,13 @@ use Symfony\Component\Mime\Email;
 
 final class AutoResponderAction implements ActionInterface
 {
+    public static string $defaultName = 'auto_responder';
     private MailerInterface $mailer;
     private EmailContentFactoryInterface $factory;
 
-    public static string $defaultName = 'auto_responder';
-
     public function __construct(
         MailerInterface $mailer,
-        EmailContentFactoryInterface $factory
+        EmailContentFactoryInterface $factory,
     ) {
         $this->mailer = $mailer;
         $this->factory = $factory;
@@ -67,7 +66,7 @@ final class AutoResponderAction implements ActionInterface
         return $email;
     }
 
-    protected function throwException(EmailNotSentException $exception): void
+    private function throwException(EmailNotSentException $exception): void
     {
         throw new ActionFailedException(self::$defaultName, $exception->getMessage());
     }

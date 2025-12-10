@@ -48,7 +48,7 @@ class FieldValue extends ValueObject
     {
         return new self(
             $fieldDefinitionId,
-            $dataText
+            $dataText,
         );
     }
 
@@ -57,7 +57,7 @@ class FieldValue extends ValueObject
         return new self(
             $fieldDefinitionId,
             '',
-            $dataInt
+            $dataInt,
         );
     }
 
@@ -67,7 +67,7 @@ class FieldValue extends ValueObject
             $fieldDefinitionId,
             '',
             0,
-            $dataFloat
+            $dataFloat,
         );
     }
 }

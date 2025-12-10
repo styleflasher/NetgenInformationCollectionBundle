@@ -23,7 +23,7 @@ class ReCaptcha implements CaptchaValue
 
         $response = $this->reCaptcha->verify(
             $request->request->get('g-recaptcha-response'),
-            $clientIp
+            $clientIp,
         );
 
         return $response->isSuccess();

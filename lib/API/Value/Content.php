@@ -27,7 +27,7 @@ final class Content extends ValueObject
         Collection $firstCollection,
         Collection $lastCollection,
         int $childCount,
-        bool $hasLocation
+        bool $hasLocation,
     ) {
         $this->hasLocation = $hasLocation;
         $this->content = $content;

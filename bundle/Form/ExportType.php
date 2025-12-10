@@ -7,20 +7,22 @@ namespace Netgen\Bundle\InformationCollectionBundle\Form;
 use DateTimeInterface;
 use Netgen\InformationCollection\API\Value\Export\ExportCriteria;
 use Netgen\InformationCollection\API\Value\Filter\ContentId;
+use Netgen\InformationCollection\Core\Export\ExportResponseFormatterRegistry;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\DataMapperInterface;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints as Assert;
-use Netgen\InformationCollection\Core\Export\ExportResponseFormatterRegistry;
+
+use function iterator_to_array;
 
 class ExportType extends AbstractType implements DataMapperInterface
 {
@@ -36,7 +38,7 @@ class ExportType extends AbstractType implements DataMapperInterface
         $builder->add('dateFrom', DateType::class, [
             'required' => true,
             'widget' => 'single_text',
-            'input'  => 'datetime_immutable',
+            'input' => 'datetime_immutable',
             'label' => 'netgen_information_collection_admin_export_from',
             'translation_domain' => 'netgen_information_collection_admin',
             'constraints' => [
@@ -48,7 +50,7 @@ class ExportType extends AbstractType implements DataMapperInterface
         $builder->add('dateTo', DateType::class, [
             'required' => true,
             'widget' => 'single_text',
-            'input'  => 'datetime_immutable',
+            'input' => 'datetime_immutable',
             'label' => 'netgen_information_collection_admin_export_to',
             'translation_domain' => 'netgen_information_collection_admin',
             'constraints' => [
@@ -115,7 +117,7 @@ class ExportType extends AbstractType implements DataMapperInterface
 
         $builder->setDataMapper($this);
 
-        $builder->addEventListener(FormEvents::POST_SET_DATA, function (FormEvent $event) use ($availableFormatters): void {
+        $builder->addEventListener(FormEvents::POST_SET_DATA, static function (FormEvent $event) use ($availableFormatters): void {
             if (empty($availableFormatters)) {
                 $formError = new FormError('netgen_information_collection_admin_export_no_formatters');
                 $event->getForm()->addError($formError);
@@ -134,24 +136,19 @@ class ExportType extends AbstractType implements DataMapperInterface
         $resolver->setAllowedTypes('contentId', 'int');
     }
 
-    public function mapDataToForms($viewData, iterable $forms): void
-    {
-
-    }
+    public function mapDataToForms($viewData, iterable $forms): void {}
 
     public function mapFormsToData(iterable $forms, &$viewData): void
     {
         $forms = iterator_to_array($forms);
 
-        $contentId = new ContentId((int)$forms['contentId']->getData(), $forms['offset']->getData(), $forms['limit']->getData());
+        $contentId = new ContentId((int) $forms['contentId']->getData(), $forms['offset']->getData(), $forms['limit']->getData());
 
         $viewData = new ExportCriteria(
             $contentId,
             $forms['dateFrom']->getData(),
             $forms['dateTo']->getData(),
-            $forms['exportType']->getData()
+            $forms['exportType']->getData(),
         );
     }
-
-
 }

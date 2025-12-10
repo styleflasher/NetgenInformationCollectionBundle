@@ -27,7 +27,7 @@ abstract class AbstractProvider implements EmailDataProviderInterface
         ConfigResolverInterface $configResolver,
         TranslationHelper $translationHelper,
         FieldHelper $fieldHelper,
-        Environment $twig
+        Environment $twig,
     ) {
         $this->configResolver = $configResolver;
         $this->config = $this->configResolver->getParameter('action_config', 'netgen_information_collection')[EmailAction::$defaultName];

@@ -21,7 +21,7 @@ final class Attribute extends ValueObject
         int $id,
         Field $field,
         FieldDefinition $fieldDefinition,
-        AttributeValue $value
+        AttributeValue $value,
     ) {
         $this->id = $id;
         $this->field = $field;

@@ -1,12 +1,13 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Netgen\Bundle\InformationCollectionBundle\Listener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
-use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
@@ -36,7 +37,7 @@ class CaptchaValidationListener implements EventSubscriberInterface
 
         if (!$captchaValue->isValid($request)) {
             $error = new FormError(
-                $this->translator->trans('netgen_information_collection.captcha')
+                $this->translator->trans('netgen_information_collection.captcha'),
             );
 
             $event->getForm()->addError($error);

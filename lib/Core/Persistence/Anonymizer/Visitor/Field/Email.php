@@ -8,6 +8,7 @@ use Ibexa\Contracts\Core\Repository\Values\ContentType\ContentType;
 use Netgen\InformationCollection\API\Persistence\Anonymizer\Visitor\FieldAnonymizerVisitor;
 use Netgen\InformationCollection\API\Value\Attribute;
 use Netgen\InformationCollection\API\Value\AttributeValue;
+
 use function implode;
 use function in_array;
 use function mb_str_split;
@@ -18,7 +19,7 @@ class Email extends FieldAnonymizerVisitor
 
     public function accept(Attribute $attribute, ContentType $contentType): bool
     {
-        return 'ibexa_email' === $attribute->getFieldDefinition()->fieldTypeIdentifier;
+        return $attribute->getFieldDefinition()->fieldTypeIdentifier === 'ibexa_email';
     }
 
     public function visit(Attribute $attribute, ContentType $contentType): AttributeValue

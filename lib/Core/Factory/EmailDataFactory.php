@@ -20,11 +20,13 @@ use Netgen\InformationCollection\API\Value\DataTransfer\TemplateContent;
 use Netgen\InformationCollection\API\Value\Event\InformationCollected;
 use Netgen\InformationCollection\Core\Action\EmailAction;
 use Twig\Environment;
+
 use function array_filter;
 use function array_key_exists;
 use function explode;
 use function filter_var;
-use function trim;
+use function mb_trim;
+
 use const FILTER_VALIDATE_EMAIL;
 
 class EmailDataFactory implements EmailContentFactoryInterface
@@ -41,7 +43,7 @@ class EmailDataFactory implements EmailContentFactoryInterface
         FieldTypeService $fieldTypeService,
         TranslationHelper $translationHelper,
         FieldHelper $fieldHelper,
-        Environment $twig
+        Environment $twig,
     ) {
         $this->configResolver = $configResolver;
         $this->fieldTypeService = $fieldTypeService;
@@ -70,7 +72,7 @@ class EmailDataFactory implements EmailContentFactoryInterface
             $this->resolveEmail($data, Constants::FIELD_SENDER),
             $this->resolve($data, Constants::FIELD_SUBJECT),
             $body,
-            $this->resolveAttachments($contentType->identifier, $value->getInformationCollectionStruct()->getFieldsData())
+            $this->resolveAttachments($contentType->identifier, $value->getInformationCollectionStruct()->getFieldsData()),
         );
     }
 
@@ -84,10 +86,10 @@ class EmailDataFactory implements EmailContentFactoryInterface
                     'event' => $data->getEvent(),
                     'collected_fields' => $data->getEvent()->getInformationCollectionStruct()->getCollectedFields(),
                     'content' => $data->getContent(),
-                ]
+                ],
             );
 
-            $rendered = trim($rendered);
+            $rendered = mb_trim($rendered);
         }
 
         if (!empty($rendered)) {
@@ -125,10 +127,10 @@ class EmailDataFactory implements EmailContentFactoryInterface
                     'event' => $data->getEvent(),
                     'collected_fields' => $data->getEvent()->getInformationCollectionStruct()->getCollectedFields(),
                     'content' => $data->getContent(),
-                ]
+                ],
             );
 
-            $rendered = trim($rendered);
+            $rendered = mb_trim($rendered);
         }
 
         if (!empty($rendered)) {
@@ -188,13 +190,13 @@ class EmailDataFactory implements EmailContentFactoryInterface
                         'content' => $data->getContent(),
                         'default_variables' => !empty($this->config[ConfigurationConstants::DEFAULT_VARIABLES])
                             ? $this->config[ConfigurationConstants::DEFAULT_VARIABLES] : null,
-                    ]
+                    ],
                 );
         }
 
         throw new MissingEmailBlockException(
             $data->getTemplateWrapper()->getSourceContext()->getName(),
-            $data->getTemplateWrapper()->getBlockNames()
+            $data->getTemplateWrapper()->getBlockNames(),
         );
     }
 

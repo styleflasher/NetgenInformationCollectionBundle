@@ -12,6 +12,8 @@ use Netgen\InformationCollection\API\Service\CaptchaService as CaptchaServiceInt
 use Netgen\InformationCollection\API\Service\CaptchaValue;
 use Netgen\InformationCollection\API\Value\Captcha\NullObject;
 use Netgen\InformationCollection\API\Value\Captcha\ReCaptcha;
+
+use function array_key_exists;
 use function array_replace;
 
 class CaptchaService implements CaptchaServiceInterface
@@ -48,21 +50,21 @@ class CaptchaService implements CaptchaServiceInterface
             $reCaptcha = new \ReCaptcha\ReCaptcha($config['secret']);
 
             if (!empty($config['options'])) {
-//                if (!empty($config['options']['hostname'])) {
+                //                if (!empty($config['options']['hostname'])) {
                 $reCaptcha->setExpectedHostname('localhost');
-//                }
-//                if (!empty($config['options']['apk_package_name'])) {
-//                    $reCaptcha->setExpectedApkPackageName($config['options']['apk_package_name']);
-//                }
+                //                }
+                //                if (!empty($config['options']['apk_package_name'])) {
+                //                    $reCaptcha->setExpectedApkPackageName($config['options']['apk_package_name']);
+                //                }
                 if (!empty($config['options']['action'])) {
                     $reCaptcha->setExpectedAction($config['options']['action']);
                 }
-//                if (!empty($config['options']['score_threshold'])) {
-//                    $reCaptcha->setScoreThreshold($config['options']['score_threshold']);
-//                }
-//                if (!empty($config['options']['challenge_timeout'])) {
-//                    $reCaptcha->setChallengeTimeout($config['options']['challenge_timeout']);
-//                }
+                //                if (!empty($config['options']['score_threshold'])) {
+                //                    $reCaptcha->setScoreThreshold($config['options']['score_threshold']);
+                //                }
+                //                if (!empty($config['options']['challenge_timeout'])) {
+                //                    $reCaptcha->setChallengeTimeout($config['options']['challenge_timeout']);
+                //                }
             }
 
             return new ReCaptcha($reCaptcha);
@@ -79,7 +81,7 @@ class CaptchaService implements CaptchaServiceInterface
     public function getConfig(Location $location): array
     {
         $contentTypeConfig = $this->getConfigForContentType(
-            $this->getContentType($location)
+            $this->getContentType($location),
         );
 
         return array_replace($this->config, $contentTypeConfig);

@@ -41,7 +41,7 @@ class Aggregate extends FieldAnonymizerVisitor
         }
 
         throw new OutOfBoundsException(
-            'No visitor registered for field anonymization'
+            'No visitor registered for field anonymization',
         );
     }
 }

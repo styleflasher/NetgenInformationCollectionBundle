@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Netgen\Bundle\InformationCollectionBundle\Controller;
 
 use Ibexa\Core\MVC\Symfony\View\ContentValueView;

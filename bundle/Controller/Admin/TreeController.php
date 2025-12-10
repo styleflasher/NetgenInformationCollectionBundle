@@ -1,9 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Netgen\Bundle\InformationCollectionBundle\Controller\Admin;
 
-use Ibexa\Core\MVC\Symfony\Security\Authorization\Attribute;
 use Ibexa\Bundle\Core\Controller;
+use Ibexa\Core\MVC\Symfony\Security\Authorization\Attribute;
 use Netgen\InformationCollection\API\Service\InformationCollection;
 use Netgen\InformationCollection\API\Value\Content;
 use Netgen\InformationCollection\API\Value\Filter\ContentId;
@@ -23,7 +25,7 @@ class TreeController extends Controller
     public function __construct(
         InformationCollection $service,
         TranslatorInterface $translator,
-        RouterInterface $router
+        RouterInterface $router,
     ) {
         $this->translator = $translator;
         $this->router = $router;
@@ -31,7 +33,7 @@ class TreeController extends Controller
     }
 
     /**
-     * Get contents with collections
+     * Get contents with collections.
      *
      * @param bool $isRoot
      */
@@ -41,12 +43,11 @@ class TreeController extends Controller
         $attribute = new Attribute('infocollector', 'read');
         $this->denyAccessUnlessGranted($attribute);
 
-        $result = array();
+        $result = [];
 
         if ($isRoot) {
             $result[] = $this->getRootTreeData();
         } else {
-
             $query = Query::withLimit($this->getConfigResolver()->getParameter('admin.tree_limit', 'netgen_information_collection'));
 
             $objects = $this->service->getObjectsWithCollections($query);
@@ -65,25 +66,25 @@ class TreeController extends Controller
     {
         $count = $this->service->getObjectsWithCollectionsCount();
 
-        return array(
+        return [
             'id' => '0',
             'parent' => '#',
             'text' => $this->translator->trans('netgen_information_collection_admin_collected_information', ['%count%' => $count->getCount()], 'netgen_information_collection_admin'),
             'children' => true,
-            'state' => array(
+            'state' => [
                 'opened' => true,
-            ),
-            'a_attr' => array(
+            ],
+            'a_attr' => [
                 'href' => $this->router->generate('netgen_information_collection.route.admin.overview'),
                 'rel' => '0',
-            ),
-            'data' => array(
-            ),
-        );
+            ],
+            'data' => [
+            ],
+        ];
     }
 
     /**
-     * Creates tree structure for Content
+     * Creates tree structure for Content.
      *
      * @param bool $isRoot
      */
@@ -96,27 +97,27 @@ class TreeController extends Controller
 
         $count = $this->service->getCollectionsCount($query);
 
-        return array(
+        return [
             'id' => $content->getContent()->id,
             'parent' => $isRoot ? '#' : '0',
-            'text' => $content->getContent()->getName($languages[0]) . ' (' . strval($count->getCount()) . ')',
+            'text' => $content->getContent()->getName($languages[0]) . ' (' . (string) $count->getCount() . ')',
             'children' => false,
-            'a_attr' => array(
+            'a_attr' => [
                 'href' => $this->router->generate('netgen_information_collection.route.admin.collection_list', ['contentId' => $content->getContent()->id]),
                 'rel' => $content->getContent()->id,
-            ),
-            'state' => array(
+            ],
+            'state' => [
                 'opened' => $isRoot,
-            ),
-            'data' => array(
-                'context_menu' => array(
-                    array(
+            ],
+            'data' => [
+                'context_menu' => [
+                    [
                         'name' => 'export',
                         'url' => $this->router->generate('netgen_information_collection.route.admin.export', ['contentId' => $content->getContent()->id]),
                         'text' => $this->translator->trans('netgen_information_collection_admin_export_export', [], 'netgen_information_collection_admin'),
-                    ),
-                ),
-            ),
-        );
+                    ],
+                ],
+            ],
+        ];
     }
 }

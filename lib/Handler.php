@@ -12,10 +12,14 @@ use Netgen\Bundle\InformationCollectionBundle\Ibexa\ContentForms\InformationColl
 use Netgen\InformationCollection\API\Events;
 use Netgen\InformationCollection\API\Value\Event\InformationCollected;
 use Netgen\InformationCollection\API\Value\InformationCollectionStruct;
-use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
+
+use function bin2hex;
+use function random_bytes;
+use function str_starts_with;
 
 final class Handler
 {

@@ -64,7 +64,7 @@ final class XlsxExportResponseFormatter implements ExportResponseFormatter
 
     public function formatToFile(Export $export, Content $content, string $path): File
     {
-         $contentName = $this->translationHelper->getTranslatedContentName($content);
+        $contentName = $this->translationHelper->getTranslatedContentName($content);
 
         $spreadsheet = new Spreadsheet();
         $activeSheet = $spreadsheet->getActiveSheet();

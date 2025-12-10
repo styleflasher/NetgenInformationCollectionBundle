@@ -12,6 +12,7 @@ use Netgen\InformationCollection\API\Service\InformationCollection;
 use Netgen\InformationCollection\API\Value\Attribute;
 use Netgen\InformationCollection\API\Value\Collection;
 use Netgen\InformationCollection\API\Value\Filter\CollectionId;
+
 use function in_array;
 
 class AnonymizerService implements Anonymizer
@@ -25,7 +26,7 @@ class AnonymizerService implements Anonymizer
     public function __construct(
         Repository $repository,
         InformationCollection $informationCollection,
-        FieldAnonymizerVisitor $fieldAnonymizerVisitor
+        FieldAnonymizerVisitor $fieldAnonymizerVisitor,
     ) {
         $this->informationCollection = $informationCollection;
         $this->repository = $repository;

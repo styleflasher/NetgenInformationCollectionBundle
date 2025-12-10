@@ -9,6 +9,7 @@ use Netgen\InformationCollection\API\Persistence\Anonymizer\Anonymizer;
 use Netgen\InformationCollection\Core\Persistence\ContentTypeUtils;
 use Netgen\InformationCollection\Doctrine\Repository\EzInfoCollectionRepository;
 use OutOfBoundsException;
+
 use function count;
 
 final class AnonymizerServiceFacade
@@ -22,7 +23,7 @@ final class AnonymizerServiceFacade
     public function __construct(
         Anonymizer $anonymizer,
         ContentTypeUtils $contentTypeUtils,
-        EzInfoCollectionRepository $ezInfoCollectionRepository
+        EzInfoCollectionRepository $ezInfoCollectionRepository,
     ) {
         $this->anonymizer = $anonymizer;
         $this->contentTypeUtils = $contentTypeUtils;
@@ -68,7 +69,7 @@ final class AnonymizerServiceFacade
 
     private function getCollections(int $contentId, ?DateTimeImmutable $date = null): array
     {
-        if (null === $date) {
+        if ($date === null) {
             $collections = $this->ezInfoCollectionRepository->findByContentId($contentId);
         } else {
             $collections = $this->ezInfoCollectionRepository->findByContentIdOlderThan($contentId, $date);

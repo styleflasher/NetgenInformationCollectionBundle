@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Netgen\Bundle\InformationCollectionBundle\Ibexa\ContentForms;
 
+use Ibexa\Contracts\ContentForms\Data\Content\FieldData;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content;
 use Ibexa\Contracts\Core\Repository\Values\Content\Location;
 use Ibexa\Contracts\Core\Repository\Values\ContentType\ContentType;
 use Netgen\InformationCollection\API\Value\InformationCollectionStruct;
-use Ibexa\Contracts\ContentForms\Data\Content\FieldData;
 
 final class InformationCollectionMapper
 {
@@ -35,7 +35,7 @@ final class InformationCollectionMapper
             $content,
             $location,
             $contentType,
-            $fieldsData
+            $fieldsData,
         );
     }
 }

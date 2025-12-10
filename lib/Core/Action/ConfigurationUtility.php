@@ -8,6 +8,7 @@ use Ibexa\Contracts\Core\Repository\Values\ContentType\ContentType;
 use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
 use Netgen\InformationCollection\API\Action\ActionInterface;
 use OutOfBoundsException;
+
 use function in_array;
 use function sprintf;
 

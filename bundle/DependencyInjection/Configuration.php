@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Netgen\Bundle\InformationCollectionBundle\DependencyInjection;
 
 use Ibexa\Bundle\Core\DependencyInjection\Configuration\SiteAccessAware\Configuration as SiteAccessConfiguration;
-use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
-use Symfony\Component\Config\Definition\Builder\TreeBuilder;
-use Symfony\Component\Config\Definition\Builder\NodeBuilder;
 use Netgen\InformationCollection\API\ConfigurationConstants;
+use Symfony\Component\Config\Definition\Builder\ArrayNodeDefinition;
+use Symfony\Component\Config\Definition\Builder\NodeBuilder;
+use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 
 class Configuration extends SiteAccessConfiguration
 {
@@ -230,7 +232,7 @@ class Configuration extends SiteAccessConfiguration
                             ->scalarNode('delimiter')->defaultValue(',')->end()
                             // by default use windows line endings for compatibility with some csv libraries
                             ->scalarNode('newline')->defaultValue("\r\n")->end()
-                            ->scalarNode('enclosure')->defaultValue("\"")->end()
+                            ->scalarNode('enclosure')->defaultValue('"')->end()
                         ->end()
                     ->end()
                 ->end()

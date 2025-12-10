@@ -20,7 +20,7 @@ class CountryFieldTypePlaceholderExtension extends AbstractTypeExtension
         $resolver->setDefaults(
             [
                 'placeholder' => 'form.field_type.ibexa_country.placeholder',
-            ]
+            ],
         );
     }
 }

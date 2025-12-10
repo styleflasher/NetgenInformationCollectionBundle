@@ -22,7 +22,7 @@ final class DoctrineDatabase
     {
         $query = $this->connection->createQueryBuilder();
         $query->select(
-            'COUNT(DISTINCT eic.contentobject_id) AS count'
+            'COUNT(DISTINCT eic.contentobject_id) AS count',
         )
             ->from('ezinfocollection', 'eic')
             ->innerJoin(
@@ -31,8 +31,8 @@ final class DoctrineDatabase
                 'ic',
                 $query->expr()->eq(
                     'eic.contentobject_id',
-                    'ic.id'
-                )
+                    'ic.id',
+                ),
             )
             ->leftJoin(
                 'eic',
@@ -40,8 +40,8 @@ final class DoctrineDatabase
                 'ict',
                 $query->expr()->eq(
                     'eic.contentobject_id',
-                    'ict.contentobject_id'
-                )
+                    'ict.contentobject_id',
+                ),
             );
 
         $data = $query->fetchAllAssociative();
@@ -76,13 +76,13 @@ final class DoctrineDatabase
                 'ic',
                 'ibexa_content_tree',
                 'ict',
-                $query->expr()->eq('ic.id', 'ict.contentobject_id')
+                $query->expr()->eq('ic.id', 'ict.contentobject_id'),
             )
             ->innerJoin(
                 'ic',
                 'ibexa_content_type',
                 'ictype',
-                $query->expr()->eq('ic.content_type_id', 'ictype.id')
+                $query->expr()->eq('ic.content_type_id', 'ictype.id'),
             )
             ->andWhere($query->expr()->in('ic.id', $contents))
             ->groupBy(['ict.main_node_id', 'content_id'])

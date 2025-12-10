@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Netgen\Bundle\InformationCollectionBundle\Ibexa\ContentForms;
 
-use Ibexa\Contracts\Core\Repository\Values\Content\Content;
 use Ibexa\Contracts\Core\Repository\Validator\ContentValidator;
+use Ibexa\Contracts\Core\Repository\Values\Content\Content;
 use Ibexa\Contracts\Core\Repository\Values\ValueObject;
 
 final class InfoCollectorContentValidator implements ContentValidator

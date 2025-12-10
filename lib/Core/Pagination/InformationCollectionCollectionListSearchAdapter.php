@@ -25,7 +25,7 @@ class InformationCollectionCollectionListSearchAdapter extends BaseAdapter
                 $this->query->getContentId(),
                 $this->query->getSearchText(),
                 0,
-                0
+                0,
             );
 
             $this->nbResults = $this->informationCollectionService
@@ -42,7 +42,7 @@ class InformationCollectionCollectionListSearchAdapter extends BaseAdapter
             $this->query->getContentId(),
             $this->query->getSearchText(),
             $offset,
-            $length
+            $length,
         );
 
         $objects = $this->informationCollectionService

@@ -17,6 +17,8 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
+use function iterator_to_array;
+
 class InformationCollectionType extends AbstractType implements DataMapperInterface
 {
     public const string FORM_BLOCK_PREFIX = 'information_collection';
@@ -54,7 +56,6 @@ class InformationCollectionType extends AbstractType implements DataMapperInterf
         $builder->add('discriminator', HiddenType::class, ['data' => $options['discriminator']]);
 
         if ($this->captchaService->isEnabled($struct->getLocation())) {
-
             $config = $this->captchaService->getConfig($struct->getLocation());
 
             $builder->add('captcha', CaptchaType::class, [
@@ -87,7 +88,7 @@ class InformationCollectionType extends AbstractType implements DataMapperInterf
 
     public function mapDataToForms($viewData, iterable $forms): void
     {
-        if (null === $viewData) {
+        if ($viewData === null) {
             return;
         }
 
@@ -103,8 +104,5 @@ class InformationCollectionType extends AbstractType implements DataMapperInterf
         }
     }
 
-    public function mapFormsToData(iterable $forms, &$viewData): void
-    {
-
-    }
+    public function mapFormsToData(iterable $forms, &$viewData): void {}
 }

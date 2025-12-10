@@ -16,14 +16,13 @@ use Symfony\Component\Mime\Email;
 
 final class EmailAction implements ActionInterface
 {
+    public static string $defaultName = 'email';
     private MailerInterface $mailer;
     private EmailContentFactoryInterface $factory;
 
-    public static string $defaultName = 'email';
-
     public function __construct(
         MailerInterface $mailer,
-        EmailContentFactoryInterface $factory
+        EmailContentFactoryInterface $factory,
     ) {
         $this->mailer = $mailer;
         $this->factory = $factory;

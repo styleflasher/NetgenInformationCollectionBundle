@@ -29,7 +29,7 @@ final class InformationCollectionStruct extends ValueObject
         Content $content,
         Location $location,
         ContentType $contentType,
-        array $fieldsData
+        array $fieldsData,
     ) {
         $this->content = $content;
         $this->location = $location;

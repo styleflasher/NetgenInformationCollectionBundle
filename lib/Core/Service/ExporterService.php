@@ -11,6 +11,7 @@ use Netgen\InformationCollection\API\Value\Export\Export;
 use Netgen\InformationCollection\API\Value\Export\ExportCriteria;
 use Netgen\InformationCollection\Core\Persistence\ContentTypeUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
+
 use function array_values;
 use function preg_replace;
 use function str_replace;
@@ -27,7 +28,7 @@ class ExporterService implements Exporter
     public function __construct(
         InformationCollection $informationCollection,
         TranslatorInterface $translator,
-        ContentTypeUtils $contentTypeUtils
+        ContentTypeUtils $contentTypeUtils,
     ) {
         $this->translator = $translator;
         $this->contentTypeUtils = $contentTypeUtils;

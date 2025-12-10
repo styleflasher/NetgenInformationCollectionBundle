@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Netgen\InformationCollection\Doctrine\Repository;
 
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content;
 use Ibexa\Contracts\Core\Repository\Values\Content\Field;
@@ -19,6 +19,7 @@ use Netgen\InformationCollection\API\Value\Filter\CollectionId;
 use Netgen\InformationCollection\API\Value\Legacy\FieldValue;
 use Netgen\InformationCollection\Doctrine\Entity\EzInfoCollection;
 use Netgen\InformationCollection\Doctrine\Entity\EzInfoCollectionAttribute;
+
 use function array_column;
 use function mb_strtolower;
 
@@ -152,7 +153,7 @@ class EzInfoCollectionAttributeRepository extends EntityRepository
             ->where('eica.contentObjectId = :contentId')
             ->setParameter('contentId', $contentId)
             ->andWhere($qb->expr()->andX(
-                $qb->expr()->like('LOWER(eica.dataText)', ':searchText')
+                $qb->expr()->like('LOWER(eica.dataText)', ':searchText'),
             ))
             ->setParameter('searchText', '%' . $searchText . '%')
             ->getQuery()

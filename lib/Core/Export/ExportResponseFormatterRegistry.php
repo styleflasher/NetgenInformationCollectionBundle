@@ -6,6 +6,7 @@ namespace Netgen\InformationCollection\Core\Export;
 
 use Netgen\InformationCollection\API\Export\ExportResponseFormatter;
 use RuntimeException;
+
 use function sprintf;
 
 final class ExportResponseFormatterRegistry
@@ -34,7 +35,7 @@ final class ExportResponseFormatterRegistry
         }
 
         throw new RuntimeException(
-            sprintf('There are no export formatters with %s identifier available.', $identifier)
+            sprintf('There are no export formatters with %s identifier available.', $identifier),
         );
     }
 

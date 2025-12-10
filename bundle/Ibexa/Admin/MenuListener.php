@@ -43,7 +43,7 @@ class MenuListener implements EventSubscriberInterface
                         'export' => 'netgen_information_collection.route.admin.export',
                     ],
                 ],
-            ]
+            ],
         );
     }
 }

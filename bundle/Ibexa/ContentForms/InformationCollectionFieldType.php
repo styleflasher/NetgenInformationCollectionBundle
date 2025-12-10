@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Netgen\Bundle\InformationCollectionBundle\Ibexa\ContentForms;
 
-use Ibexa\Contracts\ContentForms\Data\Content\FieldData;
 use Ibexa\ContentForms\FieldType\FieldTypeFormMapperDispatcherInterface;
+use Ibexa\Contracts\ContentForms\Data\Content\FieldData;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;

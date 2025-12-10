@@ -7,9 +7,9 @@ namespace Netgen\InformationCollection\Doctrine\Repository;
 use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Doctrine\ORM\Exception\ORMException;
 use Doctrine\ORM\ORMInvalidArgumentException;
 use Ibexa\Contracts\Core\Repository\Values\Content\Content;
 use Ibexa\Contracts\Core\Repository\Values\User\User;
@@ -41,7 +41,7 @@ class EzInfoCollectionRepository extends EntityRepository
             ],
             [
                 'created' => 'ASC',
-            ]
+            ],
         );
     }
 
@@ -53,7 +53,7 @@ class EzInfoCollectionRepository extends EntityRepository
             ],
             [
                 'created' => 'DESC',
-            ]
+            ],
         );
     }
 
@@ -141,7 +141,6 @@ class EzInfoCollectionRepository extends EntityRepository
 
     public function filterByIntervalOfCreation(int $contentId, DateTimeInterface $startDate, DateTimeInterface $endDate, ?int $limit = null, ?int $offset = null): array
     {
-
         $qb = $this->createQueryBuilder('ezc');
         $startTimestamp = $startDate->getTimestamp();
         $endTimestamp = $endDate->getTimestamp();
@@ -151,7 +150,7 @@ class EzInfoCollectionRepository extends EntityRepository
             ->setParameter('contentId', $contentId)
             ->andWhere($qb->expr()->andX(
                 $qb->expr()->gte('ezc.created', ':startTimestamp'),
-                $qb->expr()->lte('ezc.created', ':endTimestamp')
+                $qb->expr()->lte('ezc.created', ':endTimestamp'),
             ))
             ->setParameter('startTimestamp', $startTimestamp)
             ->setParameter('endTimestamp', $endTimestamp);

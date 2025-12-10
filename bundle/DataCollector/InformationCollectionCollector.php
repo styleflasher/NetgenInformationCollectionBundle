@@ -7,11 +7,15 @@ namespace Netgen\Bundle\InformationCollectionBundle\DataCollector;
 use Ibexa\Contracts\Core\Repository\Repository;
 use Ibexa\Contracts\Core\Repository\Values\ContentType\ContentType;
 use Ibexa\Core\Helper\TranslationHelper;
+use Netgen\Bundle\InformationCollectionBundle\Ibexa\ContentForms\InformationCollectionType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
-use Netgen\Bundle\InformationCollectionBundle\Ibexa\ContentForms\InformationCollectionType;
 use Throwable;
+
+use function array_key_exists;
+use function count;
+use function is_array;
 
 class InformationCollectionCollector extends DataCollector
 {
@@ -41,7 +45,6 @@ class InformationCollectionCollector extends DataCollector
         }
 
         $this->data = [];
-
     }
 
     public function getName(): string
@@ -97,22 +100,18 @@ class InformationCollectionCollector extends DataCollector
 
         $contentId = $data['content_id'];
         $contentTypeId = (int) $data['content_type_id'];
+
         /** @var ContentType $contentType */
         $contentType = $this->repository->sudo(
-            function(Repository $repository) use ($contentTypeId) {
-                return $repository->getContentTypeService()->loadContentType($contentTypeId);
-            }
+            static fn (Repository $repository) => $repository->getContentTypeService()->loadContentType($contentTypeId),
         );
 
         $content = $this->repository->sudo(
-            function(Repository $repository) use ($contentId) {
-                return $repository->getContentService()->loadContent((int)$contentId);
-            }
+            static fn (Repository $repository) => $repository->getContentService()->loadContent((int) $contentId),
         );
 
         foreach ($data as $identifier => $datum) {
             if (is_array($datum) && array_key_exists('value', $datum)) {
-
                 $fieldDefinition = $contentType->getFieldDefinition($identifier);
                 if ($fieldDefinition === null) {
                     continue;

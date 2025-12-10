@@ -20,11 +20,13 @@ use Netgen\InformationCollection\API\Value\DataTransfer\TemplateContent;
 use Netgen\InformationCollection\API\Value\Event\InformationCollected;
 use Netgen\InformationCollection\Core\Action\AutoResponderAction;
 use Twig\Environment;
+
 use function array_filter;
 use function array_key_exists;
 use function explode;
 use function filter_var;
-use function trim;
+use function mb_trim;
+
 use const FILTER_VALIDATE_EMAIL;
 
 class AutoResponderDataFactory implements EmailContentFactoryInterface
@@ -41,7 +43,7 @@ class AutoResponderDataFactory implements EmailContentFactoryInterface
         FieldTypeService $fieldTypeService,
         TranslationHelper $translationHelper,
         FieldHelper $fieldHelper,
-        Environment $twig
+        Environment $twig,
     ) {
         $this->configResolver = $configResolver;
         $this->fieldTypeService = $fieldTypeService;
@@ -69,7 +71,7 @@ class AutoResponderDataFactory implements EmailContentFactoryInterface
             $this->resolveRecipient($data),
             [$this->resolve($data, Constants::FIELD_SENDER, Constants::FIELD_TYPE_EMAIL)],
             $this->resolveSubject($data),
-            $body
+            $body,
         );
     }
 
@@ -83,10 +85,10 @@ class AutoResponderDataFactory implements EmailContentFactoryInterface
                     'event' => $data->getEvent(),
                     'collected_fields' => $data->getEvent()->getInformationCollectionStruct()->getCollectedFields(),
                     'content' => $data->getContent(),
-                ]
+                ],
             );
 
-            $rendered = trim($rendered);
+            $rendered = mb_trim($rendered);
         }
 
         if (!empty($rendered)) {
@@ -124,10 +126,10 @@ class AutoResponderDataFactory implements EmailContentFactoryInterface
                     'event' => $data->getEvent(),
                     'collected_fields' => $fields,
                     'content' => $data->getContent(),
-                ]
+                ],
             );
 
-            $rendered = trim($rendered);
+            $rendered = mb_trim($rendered);
         }
 
         if (!empty($rendered)) {
@@ -165,10 +167,10 @@ class AutoResponderDataFactory implements EmailContentFactoryInterface
                     'event' => $data->getEvent(),
                     'collected_fields' => $fields,
                     'content' => $data->getContent(),
-                ]
+                ],
             );
 
-            return trim($rendered);
+            return mb_trim($rendered);
         }
 
         $content = $data->getContent();
@@ -203,13 +205,13 @@ class AutoResponderDataFactory implements EmailContentFactoryInterface
                         'content' => $data->getContent(),
                         'default_variables' => !empty($this->config[ConfigurationConstants::DEFAULT_VARIABLES])
                             ? $this->config[ConfigurationConstants::DEFAULT_VARIABLES] : null,
-                    ]
+                    ],
                 );
         }
 
         throw new MissingEmailBlockException(
             $data->getTemplateWrapper()->getSourceContext()->getName(),
-            $data->getTemplateWrapper()->getBlockNames()
+            $data->getTemplateWrapper()->getBlockNames(),
         );
     }
 

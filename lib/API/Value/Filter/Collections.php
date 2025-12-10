@@ -9,7 +9,7 @@ final class Collections
     /**
      * @var array<int, int>
      *
-     * Array of ids of collections.
+     * Array of ids of collections
      */
     private array $collections;
 

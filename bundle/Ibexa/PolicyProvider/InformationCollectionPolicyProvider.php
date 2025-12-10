@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Netgen\Bundle\InformationCollectionBundle\Ibexa\PolicyProvider;
 
-use Netgen\InformationCollection\API\Permissions;
 use Ibexa\Bundle\Core\DependencyInjection\Configuration\ConfigBuilderInterface;
 use Ibexa\Bundle\Core\DependencyInjection\Security\PolicyProvider\PolicyProviderInterface;
+use Netgen\InformationCollection\API\Permissions;
 
 class InformationCollectionPolicyProvider implements PolicyProviderInterface
 {

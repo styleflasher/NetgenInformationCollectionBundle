@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Netgen\InformationCollection\API\Exception;
 
 use RuntimeException;
+
 use function count;
 use function implode;
 

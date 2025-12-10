@@ -17,11 +17,11 @@ class CaptchaExtension extends AbstractExtension
         return [
             new TwigFunction(
                 'info_collection_captcha_is_enabled',
-                [CaptchaRuntime::class, 'isEnabled']
+                [CaptchaRuntime::class, 'isEnabled'],
             ),
             new TwigFunction(
                 'info_collection_captcha_get_site_key',
-                [CaptchaRuntime::class, 'getSiteKey']
+                [CaptchaRuntime::class, 'getSiteKey'],
             ),
         ];
     }

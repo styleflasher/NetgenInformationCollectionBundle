@@ -18,7 +18,7 @@ class FieldRenderingExtension extends AbstractExtension
             new TwigFunction(
                 'info_collection_render_field',
                 [FieldRenderingRuntime::class, 'renderField'],
-                ['is_safe' => ['html']]
+                ['is_safe' => ['html']],
             ),
         ];
     }

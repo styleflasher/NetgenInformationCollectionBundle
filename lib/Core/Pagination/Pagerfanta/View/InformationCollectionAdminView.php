@@ -8,9 +8,10 @@ use Closure;
 use Pagerfanta\PagerfantaInterface;
 use Pagerfanta\View\ViewInterface;
 use Twig\Environment;
+
 use function max;
+use function mb_trim;
 use function min;
-use function trim;
 
 class InformationCollectionAdminView implements ViewInterface
 {
@@ -69,7 +70,7 @@ class InformationCollectionAdminView implements ViewInterface
             [
                 'pager' => $pagerfanta,
                 'pages' => $this->getPages(),
-            ]
+            ],
         );
     }
 
@@ -179,6 +180,6 @@ class InformationCollectionAdminView implements ViewInterface
 
         // We use trim here because Pagerfanta (or Symfony?) adds an extra '?'
         // at the end of page when there are no other query params
-        return trim($routeGenerator($page), '?');
+        return mb_trim($routeGenerator($page), '?');
     }
 }
