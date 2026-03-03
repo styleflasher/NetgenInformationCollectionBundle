@@ -4,7 +4,7 @@ netgen_information_collection.route.admin.overview:
     methods: [GET]
 
 netgen_information_collection.route.admin.collection_list:
-    path: /netgen/informationcollection/collection-list/{contentId}
+    path: /netgen/informationcollection/collection-list/{contentId}/{languageCode?}
     controller: netgen_information_collection.controller.admin::collectionListAction
     methods: [GET]
 
