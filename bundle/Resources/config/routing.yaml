@@ -9,7 +9,7 @@ netgen_information_collection.route.admin.collection_list:
     methods: [GET]
 
 netgen_information_collection.route.admin.collection_list_search:
-    path: /netgen/informationcollection/collection-list-search/{contentId}
+    path: /netgen/informationcollection/collection-list-search/{contentId}/{languageCode?}
     controller: netgen_information_collection.controller.admin::searchAction
     methods: [GET]
 
